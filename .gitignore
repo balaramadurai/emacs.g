@@ -3,3 +3,7 @@
 /custom.el
 /elpa
 /var
+/bala.el
+*.elc
+*.el~
+*.org~

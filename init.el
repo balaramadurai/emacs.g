@@ -156,10 +156,11 @@
             t))
 
 (progn ;     personalize
-  (let ((file (expand-file-name (concat (user-real-login-name) ".el")
+  (let ((file (expand-file-name (concat (user-real-login-name) ".org")
                                 user-emacs-directory)))
     (when (file-exists-p file)
-      (load file))))
+;      (load file))))
+      (org-babel-load-file file))))
 
 ;; Local Variables:
 ;; indent-tabs-mode: nil
