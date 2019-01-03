@@ -1,0 +1,230 @@
+* Spacemacs-Lite
+
+This config is for people who are either:
+1. Starting out with emacs
+2. Or tried out Spacemacs and were overwhelmed by the list of customization possible. 
+
+My screenshots of the Spacemacs-Lite version
+[[file:Spacemacs-Lite-home.png]]
+
+[[file:Spacemacs-Lite-Help.png]]
+
+[[file:Spacemacs-Lite-Org.png]]
+
+Here is my .emacs.d config. I've learnt from the internet, I thought I should return the favour :)
+
+* Quick Start
+
+You'll need emacs before we start off with this - http://wikemacs.org/index.php/Installing_Emacs
+
+Once you have installed Emacs, you can start with this. Copy the following commands line by line and press ENTER
+
+#+begin_example
+ # if you have a pre-existing config, also backup your .emacs from your home directory
+mv .emacs.d .emacs.d.bak  
+git clone  --recurse-submodules http://github.com/balaramadurai/emacs.g ~/.emacs.d
+# Launch emacs and enjoy!
+#+end_example
+
+* Motivation
+I started using Spacemacs and I fell in love with the ease of use and the thought that has gone in to developing every brick of the emacs customization. But, somehow, there were some keybindings that I wanted it my way and it was increasingly getting difficult to have it my way. Creating a layer and maintaining it also seemed to be an uphill task. Although, I did manage it at the end. Somehow, I needed something that was, let's say, light. At around the same time, I came across this talk by Suyash Bire, who talked about a Spacemacs-Lite. This concept appealed to me and I copied most of the code that I wanted from watching him. Eventually (in about a week's time), he did share his settings on github. 
+
+That inspired me to do 2 things - 
+1. Share my config so that someone else like me might benefit, and
+2. To have my config under a VC rather than Dropbox it. 
+
+That was my motivation, the list of whom I was inspired by are given below - [[*Inspiration][Inspiration]] .
+
+* Get Started
+** Step 0: Install Emacs
+http://wikemacs.org/index.php/Installing_Emacs
+** Step 1: Git clone or download the config
+One way to use this config.org to make it your own is:
+#+begin_example
+ # if you have a pre-existing config, also backup your .emacs from your home directory
+mv .emacs.d .emacs.d.bak  
+git clone --recurse-subodules http://github.com/balaramadurai/.emacs.d 
+#+end_example
+
+** Step 2: Configure your spacemacs.secret.org
+Use the template provided =spacemacs.secret.org.template=
+#+begin_example
+mv spacemacs.secret.org.template spacemacs.secret.org
+#+end_example
+
+** Step 3: Launch Emacs 
+
+Your emacs will open up in default =poet-theme=. You can customize this using =SPC t t=
+
+** Step 4: Customize the packages
+How to add a new package to your config:
+
+Type the words =<muse= and =TAB=
+#+begin_example
+<muse <TAB>
+#+end_example
+
+You'll get this
+#+BEGIN_SRC org :exports src
+,#+begin_src emacs-lisp :tangle config.el
+(use-package 
+:ensure t
+; :diminish
+; :general
+; :config
+)
+,#+end_src
+#+END_SRC
+Type the name of the emacs package from http://melpa.org or use =SPC p l= for listing packages.
+
+Go to the last parenthesis and type =C-x C-e= and the package will be installed for you. 
+
+** Step 5: Delete packages
+If you want to remove a package, delete the package with its emacs-lisp code block in this file and also =SPC p d=.
+
+By defining shortcut keys/keybindings for each package, you can make sure that when you decide to uninstall a package, the shortcut keys also go away
+
+** Step 6: Check the list of shortcuts/keybindings (Spacemacs Mnemonics)
+To make shortcut keys, use the =:general= and type in =(spacemacs-leader-key <shortcut key in quotes> '<macro>'=.
+
+I have evil (Vim emulation) enabled by default, hence I'd strongly recommend learning practicing "evil-mode" using =evil-tutor= using (=SPC h T=)
+
+** Shortcuts
+[2018-12-10 Mon 16:53]
+The long list of shortcut keys are given below, as defined my this config file:
+All these work in all evil modes *except* =insert=
+Screenshots of the Spacemacs "menu" and the Org helper "menu"
+#+NAME:Spacemacs-lite
+#+CAPTION:Spacemacs-Lite-Help page
+[[file:Spacemacs-Lite-Help.png]]
+
+[[file:Spacemacs-Lite-Org.png]]
+
+The following table can be obtained from =M-x general-describe-keybindings=
+#+NAME:Spacemacs-keys
+#+CAPTION: All Spacemacs shortcut keys/keybindings
+| *Keybinding*          | *Macro name*                           |
+|-----------------------+----------------------------------------|
+| =SPC=                 | Spacemacs-Lite Leader                  |
+|-----------------------+----------------------------------------|
+| =SPC SPC=             | M-x (helm)                             |
+| =SPC ?=               | show keybindings (helm)                |
+| =SPC !=               | shell pop (requires shell-pop)         |
+| =SPC :=               | shell command                          |
+|-----------------------+----------------------------------------|
+| =SPC a=               | *apps*                                 |
+| =SPC ad=              | dired/ranger                           |
+| =SPC ac=              | calendar                               |
+| =SPC ae=              | easy-hugo                              |
+| =SPC am=              | mu4e                                   |
+| =SPC ao=              | org                                    |
+|-----------------------+----------------------------------------|
+| =SPC b=               | *buffer*                               |
+| =SPC bb=              | list of buffers (helm)                 |
+| =SPC b]= (also =M-]=) | next buffer                            |
+| =SPC b[= (also =M-[=) | previous buffer                        |
+| =SPC ba=              | copy whole buffer to clipboard         |
+| =SPC bc=              | copy file                              |
+| =SPC bd=              | kill the current buffer                |
+| =SPC bR=              | rename file and buffer                 |
+| =SPC br=              | revert buffer (when changed on disk)   |
+| =SPC bm=              | show *Messages* buffer                 |
+| =SPC bh=              | show *Dashboard* buffer                |
+| =SPC TAB=             | show the last buffer used              |
+|-----------------------+----------------------------------------|
+| =SPC c=               | *comments*                             |
+| =SPC cl=              | comment or uncomment line              |
+| =SPC cr=              | comment region                         |
+|-----------------------+----------------------------------------|
+| =SPC f=               | *files*                                |
+| =SPC ff=              | open files (helm)                      |
+| =SPC fr=              | open recent files                      |
+| =SPC fe=              | emacs files                            |
+| =SPC fed=             | open init.el                           |
+| =SPC fec=             | open config.org (this file)              |
+| =SPC feR=             | load init.el                           |
+| =SPC fs=              | save the current file                  |
+|-----------------------+----------------------------------------|
+| =SPC i=               | *insert*                               |
+| =SPC ip=              | /passwords/                            |
+|-----------------------+----------------------------------------|
+| =SPC p=               | *packages*                             |
+| =SPC pi=              | install a new package                  |
+| =SPC pl=              | list all packages                      |
+| =SPC pu=              | upgrade all packages                   |
+| =SPC pd=              | remove a package                       |
+| =SPC pr=              | auto remove unnecessary packages       |
+|-----------------------+----------------------------------------|
+| =SPC q=               | *quit*                                 |
+| =SPC qq=              | quit emacs                             |
+| =SPC qr=              | quit and restart emacs                 |
+| =SPC qd=              | quit and restart emacs with debug-init |
+|-----------------------+----------------------------------------|
+| =SPC ao=              | *org*                                  |
+| =SPC aoc=             | org capture                            |
+| =SPC aol=             | org store link                         |
+| =SPC aoo= (also =F2=) | org agenda                             |
+| =SPC r=               | /org reviews/                          |
+| =SPC rw=              | weekly review                          |
+| =SPC rq=              | quarterly review                       |
+| =SPC ry=              | yearly review                          |
+|-----------------------+----------------------------------------|
+| =SPC s=               | *search*                               |
+| =SPC ss=              | search within a buffer (helm)          |
+| =SPC sw=              | /web/                                  |
+| =SPC swd=             | Duckduckgo search using w3m            |
+|-----------------------+----------------------------------------|
+| =SPC t=               | *themes*                               |
+| =SPC tt=              | load themes                            |
+| =SPC td=              | load dichromacy theme                  |
+| =SPC tl=              | load leuven theme                      |
+| =SPC tsd=             | load spacemacs dark theme              |
+| =SPC tsl=             | load spacemacs light theme             |
+| =SPC tp=              | load poet theme                        |
+|-----------------------+----------------------------------------|
+| =SPC w=               | *windows*                              |
+| =SPC wm=              | maximize window                        |
+| =SPC wd=              | delete window                          |
+| =SPC w/=              | split window vertically                |
+| =SPC w-=              | split window horizontally              |
+| =SPC 1=               | select window 1                        |
+| =SPC 2=               | select window 2                        |
+
+** Org Mode
+[2018-12-12 Wed 17:15]
+
+Org Mode shortcuts (or major mode shortcuts can be accessed through)
+
+| *keybinding* | *Description*   |
+|--------------+-----------------|
+| =.=          | Org Mode helper |
+|              |                 |
+* Inspiration
+[2018-12-07 Fri 07:08]
+The following snippet is modified from https://github.com/ralesi/spacemacs.org and is placed in your =~/.emacs.d/init.el=
+#+begin_example
+ ;; tangle without actually loading org
+  (let ((src (concat user-emacs-directory "config.org"))
+        (ui (concat user-emacs-directory "config.el")))
+    (when (file-newer-than-file-p src ui)
+      (call-process
+       (concat invocation-directory invocation-name)
+       nil nil t
+       "-q" "--batch" "--eval" "(require 'ob-tangle)"
+       "--eval" (format "(org-babel-tangle-file \"%s\")" src)))
+    (load-file ui))
+
+#+end_example
+
+
+This is inspired (read "copied/borrowed/reused") from the following sources (and not limited to):
+- Sacha Chua's configuration file https://github.com/sachac/.emacs.d - emacs-news
+- https://github.com/mwfogleman/.emacs.d/ - thanks for PARA and review templates
+- http://doc.norang.ca/org-mode.html - I started here
+- https://github.com/BrettWitty/dotemacs - idea of using an org file for an init 
+- https://github.com/sam217pa - general.el and use-package
+- Suyash Bire's emacs Meetup talk (https://github.com/suyashbire1/emacs.d) - Spacemacs-Lite/DIY
+- of course, myriads of trips to reddit,
+- stackexchange,
+- https://github.com/syl20bnr/spacemacs/ - SPCmacs :smiley:
+- https://github.com/TheBB/spaceline - the wonderful modeline

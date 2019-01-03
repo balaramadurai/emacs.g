@@ -784,7 +784,7 @@ For instance pass En as source for English."
      "!"    'org-time-stamp-inactive
      "."    'org-ctrl-c-ctrl-c
      "'"    'org-edit-special
-     ":"    'org-set-tags
+     ":"    'org-set-tags-command
      "*"    'org-ctrl-c-star
      "a"    'org-agenda
      "A"    'org-archive-subtree
