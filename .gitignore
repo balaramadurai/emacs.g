@@ -7,3 +7,5 @@
 *.elc
 *.el~
 *.org~
+/auto-save-list/.saves-10968-LinuxMint~
+/auto-save-list/.saves-1898-LinuxMint~

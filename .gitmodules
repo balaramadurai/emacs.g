@@ -1,6 +1,6 @@
-[borg]
-	pushDefault = locutus
-	collective = emacsg
+[submodule "ESS"]
+	path = lib/ESS
+	url = https://github.com/emacs-ess/ESS.git
 [submodule "alert"]
 	path = lib/alert
 	url = git@github.com:jwiegley/alert.git
@@ -34,6 +34,12 @@
 [submodule "company"]
 	path = lib/company
 	url = git@github.com:company-mode/company-mode.git
+[submodule "company-mode"]
+	path = lib/company-mode
+	url = https://github.com/company-mode/company-mode.git
+[submodule "criticmarkup-emacs"]
+	path = lib/criticmarkup-emacs
+	url = https://github.com/joostkremers/criticmarkup-emacs.git
 [submodule "dash"]
 	path = lib/dash
 	url = git@github.com:magnars/dash.el.git
@@ -53,6 +59,9 @@
 [submodule "easy-hugo"]
 	path = lib/easy-hugo
 	url = git@github.com:masasam/emacs-easy-hugo.git
+[submodule "elpa"]
+	path = lib/elpa
+	url = https://git.savannah.gnu.org/git/emacs/elpa.git
 [submodule "emacsql"]
 	path = lib/emacsql
 	url = git@github.com:skeeto/emacsql.git
@@ -163,7 +172,7 @@
 	url = git@github.com:rnkn/olivetti.git
 [submodule "org"]
 	path = lib/org
-	url = https://code.orgmode.org/bzg/org-mode 
+	url = git@code.orgmode.org:bzg/org-mode.git
 [submodule "org-bullets"]
 	path = lib/org-bullets
 	url = git@github.com:emacsorphanage/org-bullets.git
@@ -269,6 +278,9 @@
 [submodule "with-editor"]
 	path = lib/with-editor
 	url = git@github.com:magit/with-editor.git
+[borg]
+	pushDefault = locutus
+	collective = emacsg
 [submodule "wrap-region"]
 	path = lib/wrap-region
 	url = git@github.com:rejeep/wrap-region.el.git
