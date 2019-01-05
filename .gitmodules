@@ -354,6 +354,10 @@
 	path = lib/typo
 	url = https://github.com/jorgenschaefer/typoel.git
 	ignore = dirty
+[submodule "undo-tree"]
+	path = lib/undo-tree
+	url = git@github.com:emacsorphanage/undo-tree.git
+	ignore = dirty
 [submodule "use-package"]
 	path = lib/use-package
 	url = https://github.com/jwiegley/use-package.git
@@ -366,13 +370,13 @@
 	path = lib/w3m
 	url = https://github.com/emacsorphanage/w3m.git
 	ignore = dirty
+[borg]
+	pushDefault = locutus
+	collective = emacsg
 [submodule "wc-mode"]
 	path = lib/wc-mode
 	url = https://github.com/bnbeckwith/wc-mode.git
 	ignore = dirty
-[borg]
-	pushDefault = locutus
-	collective = emacsg
 [submodule "which-key"]
 	path = lib/which-key
 	url = https://github.com/justbur/emacs-which-key.git

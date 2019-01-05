@@ -13,6 +13,7 @@ This is a modest version of the super amazing package called Spacemacs!
   - [[#which-key][Which Key]]
   - [[#helm][Helm]]
   - [[#beancount][Beancount]]
+  - [[#borg-queen][Borg Queen]]
   - [[#ox-tufte-latex][Ox-tufte-latex]]
   - [[#critic-markup][Critic Markup]]
   - [[#company][Company]]
@@ -36,6 +37,7 @@ This is a modest version of the super amazing package called Spacemacs!
   - [[#smartparens][Smartparens]]
   - [[#shell-pop][Shell pop]]
   - [[#toc-org][TOC org]]
+  - [[#undo-tree][Undo Tree]]
   - [[#w3m][w3m]]
   - [[#writeroom][Writeroom]]
   - [[#writing-mode][Writing Mode]]
@@ -50,6 +52,8 @@ This is a modest version of the super amazing package called Spacemacs!
   - [[#emacs-basics][Emacs Basics]]
   - [[#calendar][Calendar]]
   - [[#browser][Browser]]
+  - [[#backups][Backups]]
+  - [[#history][History]]
   - [[#save-my-place-or-ill-rearrange-your-face][Save my place or I'll rearrange your face]]
   - [[#detect-internet-connection][Detect Internet Connection]]
 - [[#startup-buffer][Startup Buffer]]
@@ -849,7 +853,7 @@ For instance pass En as source for English."
    :config
    (setq org-modules
          (quote
-          (org-habit org-info org-w3m org-checklist)))
+          (org-habit org-info org-w3m org-checklist org-tempo)))
 
 
    (defun my/org-agenda-done (&optional arg)
@@ -1326,40 +1330,22 @@ org-mode.
 
 
 #+BEGIN_src emacs-lisp   
+(with-eval-after-load 'org
+  (require 'org-tempo))
 (setq org-structure-template-alist
-      (quote (("s" "#+BEGIN_SRC ?\n\n#+END_SRC" "<src lang=\"?\">\n\n</src>")
-              ("e" "#+begin_example\n?\n#+end_example" "<example>\n?\n</example>")
-              ("q" "#+begin_quote\n?\n#+end_quote" "<quote>\n?\n</quote>")
-              ("v" "#+begin_verse\n?\n#+end_verse" "<verse>\n?\n</verse>")
-              ("muse" "#+begin_src emacs-lisp   \n(use-package ?\n\n;:quelpa (<package-name> :fetcher <github|bitbucket> :repo <name of repo> :files (\"<path>/<file.el>\")\n; :diminish\n; :general\n; :config\n)\n#+end_src" "<src lang=\"emacs-lisp \">\n\n</src>") 
-              ("m" "#+begin_src emacs-lisp   \n\n#+end_src" "<src lang=\"emacs-lisp \">\n\n</src>") 
-              ("r" "#+begin_src R :results output :session *R* :exports both\n\n#+end_src" "<src lang=\"R\">\n\n</src>")
-              ("R" "#+begin_src R :results output graphics :file (org-babel-temp-file \"figure\" \".png\") :exports both :width 600 :height 400 :session *R* \n\n#+end_src" "<src lang=\"R\">\n\n</src>")
-              ("RR" "#+begin_src R :results output graphics :file  (org-babel-temp-file (concat (file-name-directory (or load-file-name buffer-file-name)) \"figure-\") \".png\") :exports both :width 600 :height 400 :session *R* \n\n#+end_src" "<src lang=\"R\">\n\n</src>")
-              ("p" "#+begin_src python :results output :exports both\n\n#+end_src" "<src lang=\"python\">\n\n</src>")
-              ("P" "#+begin_src python :results output :session :exports both\n\n#+end_src" "<src lang=\"python\">\n\n</src>")
-              ("PP" "#+begin_src python :results file :session :var matplot_lib_filename=(org-babel-temp-file \"figure\" \".png\") :exports both\nimport matplotlib.pyplot as plt\n\nimport numpy\nx=numpy.linspace(-15,15)\nplt.figure(figsize=(10,5))\nplt.plot(x,numpy.cos(x)/x)\nplt.tight_layout()\n\nplt.savefig(matplot_lib_filename)\nmatplot_lib_filename\n#+end_src" "<src lang=\"python\">\n\n</src>")
-              ("c" "#+begin_comment\n?\n#+end_comment" "<center>\n?\n</center>")
-              ("n" "#+BEGIN_NOTES\n?\n#+END_NOTES" "<p>\n?\n</p>")
-              ("l" "#+begin_latex\n?\n#+end_latex" "<literal style=\"latex\">\n?\n</literal>")
-              ("L" "#+latex: " "<literal style=\"latex\">?</literal>")
-              ("h" "#+begin_html\n?\n#+end_html" "<literal style=\"html\">\n?\n</literal>")
-              ("H" "#+html: " "<literal style=\"html\">?</literal>")
-              ("a" "#+begin_ascii\n?\n#+end_ascii")
-              ("A" "#+ascii: ")
-              ("i" "<img src=\"/img/?\" alt=\"Alt text goes here\" class=\"img-responsive\" />")
-              ("I" "#+include %file ?" "<include file=%file markup=\"?\">"))))
+      (quote(("q" . "quote")
+             ("v" . "verse")
+             ("muse" . "src emacs-lisp \n(use-package ?\n\n;:quelpa (<package-name> :fetcher <github|bitbucket> :repo <name of repo> :files (\"<path>/<file.el>\")\n;) :diminish\n; :general\n; :config\n)\n")
+             ("m" . "src emacs-lisp") 
+             ("r" . "src R :results output :session *R* :exports both")
+             ("R" . "src R :results output graphics :file (org-babel-temp-file \"figure\" \".png\") :exports both :width 600 :height 400 :session *R*")
+             ("RR" . "src R :results output graphics :file  (org-babel-temp-file (concat (file-name-directory (or load-file-name buffer-file-name)) \"figure-\") \".png\") :exports both :width 600 :height 400 :session *R*")
+             ("p" . "src python :results output :exports both")
+             ("P" . "src python :results output :session :exports both")
+             ("PP" . "src python :results file :session :var matplot_lib_filename=(org-babel-temp-file \"figure\" \".png\") :exports both\nimport matplotlib.pyplot as plt\n\nimport numpy\nx=numpy.linspace(-15,15)\nplt.figure(figsize=(10,5))\nplt.plot(x,numpy.cos(x)/x)\nplt.tight_layout()\n\nplt.savefig(matplot_lib_filename)\nmatplot_lib_filename")
+             )))
 #+END_SRC
 
-#+BEGIN_SRC emacs-lisp :tangle no
-              ("r" "#+begin_src R :results output :session *R* :exports both\n\n#+end_src" "<src lang=\"R\">\n\n</src>")
-              ("R" "#+begin_src R :results output graphics :file (org-babel-temp-file \"figure\" \".png\") :exports both :width 600 :height 400 :session *R* \n\n#+end_src" "<src lang=\"R\">\n\n</src>")
-              ("RR" "#+begin_src R :results output graphics :file  (org-babel-temp-file (concat (file-name-directory (or load-file-name buffer-file-name)) \"figure-\") \".png\") :exports both :width 600 :height 400 :session *R* \n\n#+end_src" "<src lang=\"R\">\n\n</src>")
-              ("p" "#+begin_src python :results output :exports both\n\n#+end_src" "<src lang=\"python\">\n\n</src>")
-              ("P" "#+begin_src python :results output :session :exports both\n\n#+end_src" "<src lang=\"python\">\n\n</src>")
-              ("PP" "#+begin_src python :results file :session :var matplot_lib_filename=(org-babel-temp-file \"figure\" \".png\") :exports both\nimport matplotlib.pyplot as plt\n\nimport numpy\nx=numpy.linspace(-15,15)\nplt.figure(figsize=(10,5))\nplt.plot(x,numpy.cos(x)/x)\nplt.tight_layout()\n\nplt.savefig(matplot_lib_filename)\nmatplot_lib_filename\n#+end_src" "<src lang=\"python\">\n\n</src>")
-
-#+END_SRC
 
 **** Next is for tasks
 :PROPERTIES:
@@ -1415,15 +1401,6 @@ need this manual step.
 
 In order for filling to work correctly this needs to be set before the
 exporters are loaded.
-
-#+BEGIN_src emacs-lisp   
-
-(add-hook 'message-mode-hook 'turn-on-orgstruct)
-(add-hook 'message-mode-hook 'orgstruct++-mode 'append)
-(add-hook 'message-mode-hook 'turn-on-auto-fill 'append)
-;; (add-hook 'message-mode-hook 'bbdb-define-all-aliases 'append)
-(add-hook 'message-mode-hook 'orgtbl-mode 'append)
-#+END_SRC
 
 **** Preserving source block indentation
 :PROPERTIES:
@@ -2456,6 +2433,12 @@ In the future, I'd like to:
 
 #+end_src
 *** Org Reveal
+
+#+begin_src emacs-lisp 
+(with-eval-after-load 'org
+  (require 'ox-reveal)
+)
+#+end_src
 *** Gnuplot
 [2018-12-05 Wed 09:33]
 #+begin_src emacs-lisp   
@@ -2863,6 +2846,52 @@ Integrate with org-mode
 ;; namely the htmlize-and-send, above.
 (add-hook 'org-ctrl-c-ctrl-c-hook 'htmlize-and-send t)
 
+(defun mwp-org-get-headline ()
+  "Acquire the parent headline & return."
+  (save-excursion
+    (org-mark-subtree)
+    (nth 4 (org-heading-components))))
+
+(defun mwp-org-attachment-list (&optional id)
+  "Get a list of files (absolute filenames) attached to the
+current heading, or the heading indicated by optional argument ID."
+  (when (featurep 'org-attach)
+    (let* ((attach-dir (save-excursion
+                         (when id
+                           (org-id-goto id))
+                         (org-attach-dir t)))
+           (files
+            (mapcar
+             (lambda (f)
+               (expand-file-name f attach-dir))
+             (org-attach-file-list attach-dir))))
+      files)))
+
+(defun org-subtree-as-email ()
+  (interactive)
+
+  ;; TODO: copy org subtree to kill ring
+  ;; ...
+
+  (org-copy-subtree)
+  (let ((attachments (mwp-org-attachment-list))
+        (subject  (mwp-org-get-headline)))
+  (set-buffer (get-buffer-create "*draft*"))
+  (message-mode)
+  (insert "From: \n")
+  (insert "To: \n")
+  (insert "Subject: ")
+  (insert subject)
+  (insert "\n")
+  (insert "--text follows this line--\n")
+    (insert "Hello "  ",\n")
+  (yank)
+    (insert "\nThanks and have a great day,\nBala\n")
+    (dolist (a attachments) (message "Attachment: %s" a) (mml-attach-file a (mm-default-file-encoding a) nil "attachment"))
+  (pop-to-buffer-same-window (current-buffer))
+    ;; (org-mime-subtree)
+    ;; (org-mime-htmlize)
+    ))
 #+END_SRC
 
 ** Password generator
@@ -2954,6 +2983,26 @@ Integrate with org-mode
 (use-package toc-org
 
 :init (toc-org-mode 1))
+#+end_src
+** Undo Tree
+[2019-01-05 Sat 09:22]
+#+begin_src emacs-lisp 
+(use-package undo-tree
+  
+					;:quelpa (<package-name> :fetcher <github|bitbucket> :repo <name of repo> :files ("<path>/<file.el>")
+  :diminish
+  
+  (undo-tree-mode . " Ⓤ")
+  :general
+  (spacemacs-lite/set-leader-keys "au" 'undo-tree-visualize)
+  :config
+  (progn
+    (global-undo-tree-mode)
+    (setq undo-tree-visualizer-timestamps t)
+    (setq undo-tree-visualizer-diff t))
+  )
+
+
 #+end_src
 ** w3m
 [2018-11-13 Tue 10:00]
@@ -3185,6 +3234,38 @@ Set the start of the week to Saturday
 [2018-01-05 Fri 12:37] 
 #+BEGIN_src emacs-lisp   
 (setq browse-url-browser-function (quote browse-url-default-browser))
+#+END_SRC
+
+** Backups
+
+This is one of the things people usually want to change right away. By default, Emacs saves backup files in the current directory. These are the files ending in =~= that are cluttering up your directory lists. The following code stashes them all in =~/.emacs.d/backups=, where I can find them with =C-x C-f= (=find-file=) if I really need to.
+
+#+BEGIN_SRC emacs-lisp
+(setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
+#+END_SRC
+
+Disk space is cheap. Save lots.
+
+#+BEGIN_SRC emacs-lisp
+(setq delete-old-versions -1)
+(setq version-control t)
+(setq vc-make-backup-files t)
+(setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)))
+#+END_SRC
+
+** History
+
+From http://www.wisdomandwonder.com/wordpress/wp-content/uploads/2014/03/C3F.html
+#+BEGIN_SRC emacs-lisp
+(setq savehist-file "~/.emacs.d/savehist")
+(savehist-mode 1)
+(setq history-length t)
+(setq history-delete-duplicates t)
+(setq savehist-save-minibuffer-history 1)
+(setq savehist-additional-variables
+      '(kill-ring
+        search-ring
+        regexp-search-ring))
 #+END_SRC
 
 ** Save my place or I'll rearrange your face

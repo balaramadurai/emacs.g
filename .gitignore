@@ -6,3 +6,4 @@
 *.el~
 *.org~
 /auto-save-list/
+/backups/
