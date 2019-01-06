@@ -779,9 +779,9 @@ For instance pass En as source for English."
      "aol"   'org-store-link
      "aoo"   'org-agenda
      "r"     '(:ignore t :wk "Org Reviews")
-     "rw"    'my-new-weekly-review
-     "rq"    'my-new-quarterly-review
-     "ry"    'my-new-yearly-review
+     "rw"    'weekly-review
+     "rq"    'quarterly-review
+     "ry"    'yearly-review
      )
    (spacemacs-lite/set-leader-keys-for-major-mode 
      ","    'org-time-stamp
@@ -811,9 +811,9 @@ For instance pass En as source for English."
      "r"    'org-refile
      "P"    'org-set-property
      "R"    '(:ignore t :which-key "Reviews")
-     "Rw"   'my-new-weekly-review
-     "Rq"   'my-new-quarterly-review
-     "Ry"   'my-new-yearly-review
+     "Rw"   'weekly-review
+     "Rq"   'quarterly-review
+     "Ry"   'yearly-review
      "s"    '(:ignore t :which-key "subtrees")
      "sc"   'org-copy-subtree
      "<right>" 'org-agenda-do-date-later
@@ -851,10 +851,6 @@ For instance pass En as source for English."
     [remap org-deadline]             'org-agenda-deadline)
 
    :config
-   (setq org-modules
-         (quote
-          (org-habit org-info org-w3m org-checklist org-tempo)))
-
 
    (defun my/org-agenda-done (&optional arg)
      "Mark current TODO as done.
@@ -862,7 +858,7 @@ For instance pass En as source for English."
    the same tree node, and the headline of the tree node in the Org-mode file."
      (interactive "P")
      (org-agenda-todo "DONE"))
-   (defun my-new-weekly-review ()
+   (defun weekly-review ()
      (interactive)
      (progn
        (org-capture nil "rw")
@@ -871,19 +867,19 @@ For instance pass En as source for English."
        (org-narrow-to-subtree)
        (fetch-calendar)))
 
-   (defun my-new-quarterly-review ()
+   (defun quarterly-review ()
      (interactive)
      (progn
-       (org-capture nil "q")
+       (org-capture nil "rq")
        (org-capture-finalize t)
        (org-speed-move-safe 'outline-up-heading)
        (org-narrow-to-subtree)
        (fetch-calendar)))
 
-   (defun my-new-yearly-review ()
+   (defun yearly-review ()
      (interactive)
      (progn
-       (org-capture nil "y")
+       (org-capture nil "ry")
        (org-capture-finalize t)
        (org-speed-move-safe 'outline-up-heading)
        (org-narrow-to-subtree)
@@ -1035,7 +1031,7 @@ For instance pass En as source for English."
          ((tags "CProj"
                 ((org-agenda-overriding-header "Current Project")
                  (org-tags-match-list-sublevels nil)))
-          (tags "CQuarter"
+          (tags "+CQuarter+CYear/!"
                 ((org-agenda-overriding-header "Completed Projects in this Quarter")
                  (org-tags-match-list-sublevels nil)))
           (tags "CYear"
@@ -1059,7 +1055,6 @@ For instance pass En as source for English."
                  (org-agenda-skip-function
                   (quote bh/skip-non-archivable-tasks))
                  (org-tags-match-list-sublevels nil)))
-          ("~/org/Reviews/2018-Q.pdf")
           )
    ((org-agenda-files '("~/org/todo.org")))
          )
@@ -1331,7 +1326,10 @@ org-mode.
 
 #+BEGIN_src emacs-lisp   
 (with-eval-after-load 'org
-  (require 'org-tempo))
+  (require 'org-tempo)
+  (require 'org-habit)
+  (require 'org-checklist)
+  )
 (setq org-structure-template-alist
       (quote(("q" . "quote")
              ("v" . "verse")
