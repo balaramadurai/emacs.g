@@ -21,6 +21,7 @@ This is a modest version of the super amazing package called Spacemacs!
   - [[#emoji][Emoji]]
   - [[#ess][ESS]]
   - [[#evil][Evil]]
+  - [[#eyebrowse][EyeBrowse]]
   - [[#fountain][Fountain]]
   - [[#gcal][Gcal]]
   - [[#google-translate][Google Translate]]
@@ -81,6 +82,14 @@ Initialization of the startup file. I made a design choice of moving to an org f
 (setq default-fill-column 99999)		; toggle wrapping to a really long line
 (defalias 'yes-or-no-p 'y-or-n-p) ; Simplify life 
 (setq ad-redefinition-action 'accept)         ; to get rid of the annoying "ad-handle-definition" warning
+  (add-hook 'text-mode-hook
+	    (lambda ()
+	      (variable-pitch-mode 1)))
+  (set-face-attribute 'default nil :family "Iosevka" :height 105)
+  (set-face-attribute 'fixed-pitch nil :family "Iosevka" :height 105)
+  (set-face-attribute 'variable-pitch nil :family "Baskerville" :height 110)
+  (flyspell-mode 1)        ;; Catch Spelling mistakes
+  (blink-cursor-mode 0)    ;; Reduce visual noise
 
 ;; These instructions are coming from this website - https://sam217pa.github.io/2016/09/02/how-to-build-your-own-spacemacs/
 ;;
@@ -208,10 +217,12 @@ If the universal prefix argument is used then will the windows too."
 (defun disable-all-themes ()
   "disable all active themes."
   (dolist (i custom-enabled-themes)
-    (disable-theme i)))
+    (disable-theme i)
+    (powerline-reset)))
 
 (defadvice load-theme (before disable-themes-first activate)
-  (disable-all-themes))
+  (disable-all-themes)
+  (powerline-reset))
 
 ;; Following lines to cycle through themes adapted from ivan's answer on
 ;; https://emacs.stackexchange.com/questions/24088/make-a-function-to-toggle-themes
@@ -468,19 +479,9 @@ If the universal prefix argument is used then will the windows too."
 )
 #+end_src
 ** Beancount
-#+BEGIN_src emacs-lisp :tangle no
-(use-package beancount
-  :quelpa (beancount
-           :fetcher bitbucket
-           :repo blais/beancount
-           :files ("editors/emacs/beancount.el")))
-#+END_SRC
-
 #+BEGIN_src emacs-lisp 
-(defvar lib/beancount (file-name-as-directory (expand-file-name "lib/beancount/editors/emacs" user-emacs-directory))
-  "Directory containing beancount.")
 (use-package beancount
-  :load-path lib/beancount
+  :load-path "lib/beancount/editors/emacs"
            )
 #+END_SRC
 ** Borg Queen
@@ -564,7 +565,6 @@ If the universal prefix argument is used then will the windows too."
       
       )
 #+END_SRC
-
 ** Emoji
 [2018-12-04 Tue 05:40]
 #+begin_src emacs-lisp   
@@ -616,12 +616,12 @@ If the universal prefix argument is used then will the windows too."
 #+end_src
 *** Unimpaired
 [2018-12-07 Fri 06:22]
-#+begin_src emacs-lisp :tangle no 
+#+begin_src emacs-lisp 
 (use-package evil-unimpaired
   
-  :requires evil
-  :quelpa (evil-unimpaired :fetcher github :repo syl20bnr/spacemacs :files ("layers/+spacemacs/spacemacs-evil/local/evil-unimpaired/evil-unimpaired.el"))
-;  :load-path "~/.emacs.d/local/evil-unimpaired"
+;  :requires evil
+;  :quelpa (evil-unimpaired :fetcher github :repo syl20bnr/spacemacs :files ("layers/+spacemacs/spacemacs-evil/local/evil-unimpaired/evil-unimpaired.el"))
+  :load-path "lib/evil-unimpaired"
 					; :diminish
 					; :general
 					; :config
@@ -651,6 +651,19 @@ If the universal prefix argument is used then will the windows too."
 ; :general
 ; :config
 )
+#+end_src
+** EyeBrowse
+[2019-01-07 Mon 17:08]
+#+begin_src emacs-lisp 
+(use-package eyebrowse
+
+;:quelpa (<package-name> :fetcher <github|bitbucket> :repo <name of repo> :files ("<path>/<file.el>")
+;) :diminish
+; :general
+; :config
+)
+
+
 #+end_src
 ** Fountain
 [2018-06-23 Sat 17:55]
@@ -3139,21 +3152,7 @@ current heading, or the heading indicated by optional argument ID."
 * Look & Feel
 ** Theme
 #+BEGIN_src emacs-lisp  
-(use-package poet-theme
-  
-  :defer t
-  :init (load-theme 'poet t)
-  :config
-  (add-hook 'text-mode-hook
-	    (lambda ()
-	      (variable-pitch-mode 1)))
-  (set-face-attribute 'default nil :family "Iosevka" :height 105)
-  (set-face-attribute 'fixed-pitch nil :family "Iosevka" :height 105)
-  (set-face-attribute 'variable-pitch nil :family "Baskerville" :height 110)
-  (flyspell-mode 1)        ;; Catch Spelling mistakes
-  (blink-cursor-mode 0)    ;; Reduce visual noise
-  )
-
+(use-package poet-theme)
 #+END_SRC
 
 ** Window Numbering
@@ -3174,21 +3173,22 @@ current heading, or the heading indicated by optional argument ID."
 (use-package spaceline
   
   ;; :disabled t
-  :init
+  :config
+  (require 'spaceline-config)
   (setq powerline-default-separator 'wave
         spaceline-minor-modes-separator " ")
-  (require 'spaceline-config)
   (setq spaceline-window-numbers-unicode t)
   (setq spaceline-org-pomodoro-p t)
   (setq spaceline-highlight-face-func 'spaceline-highlight-face-evil-state)
   (spaceline-toggle-window-number-on)
   (spaceline-toggle-org-pomodoro-on)
   (spaceline-toggle-hud-on)
-  (setq powerline-height 25)
+  (setq powerline-height 24)
   (setq display-time-format "%b %d %a %R")
   (display-time-mode t)
   (spaceline-spacemacs-theme)
   (winum-mode 1)
+  (powerline-reset)
   )
 
 #+end_src

@@ -47,7 +47,14 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(ansi-color-names-vector
+   ["#0a0814" "#f2241f" "#67b11d" "#b1951d" "#4f97d7" "#a31db1" "#28def0" "#b2b2b2"])
+ '(custom-safe-themes
+   (quote
+    ("fa2b58bb98b62c3b8cf3b6f02f058ef7827a8e497125de0254f56e373abee088" "436b185b423b78eb5d110dc23f4b95d78a1f002d156f226b7e6e5b1f6493dda0" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" default)))
+ '(fci-rule-color "#dedede")
+ '(line-spacing 0.2)
+ '(pdf-view-midnight-colors (quote ("#b2b2b2" . "#292b2e"))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

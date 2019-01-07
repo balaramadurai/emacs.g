@@ -120,6 +120,14 @@
 	path = lib/evil-tutor
 	url = https://github.com/syl20bnr/evil-tutor.git
 	ignore = dirty
+[submodule "evil-unimpaired"]
+	path = lib/evil-unimpaired
+	url = https://github.com/zmaas/evil-unimpaired
+	ignore = dirty
+[submodule "eyebrowse"]
+	path = lib/eyebrowse
+	url = git@github.com:wasamasa/eyebrowse.git
+	ignore = dirty
 [submodule "f"]
 	path = lib/f
 	url = https://github.com/rejeep/f.el.git
@@ -338,17 +346,20 @@
 	path = lib/smartparens
 	url = https://github.com/Fuco1/smartparens.git
 	ignore = dirty
+[borg]
+	pushDefault = locutus
+	collective = emacsg
 [submodule "spaceline"]
 	path = lib/spaceline
 	url = https://github.com/TheBB/spaceline.git
 	ignore = dirty
+[submodule "spacemacs-theme"]
+	path = lib/spacemacs-theme
+	url = git@github.com:nashamri/spacemacs-theme.git
+	ignore = dirty
 [submodule "toc-org"]
 	path = lib/toc-org
 	url = https://github.com/snosov1/toc-org.git
-	ignore = dirty
-[submodule "treepy"]
-	path = lib/treepy
-	url = https://github.com/volrath/treepy.el.git
 	ignore = dirty
 [submodule "typo"]
 	path = lib/typo
@@ -370,9 +381,6 @@
 	path = lib/w3m
 	url = https://github.com/emacsorphanage/w3m.git
 	ignore = dirty
-[borg]
-	pushDefault = locutus
-	collective = emacsg
 [submodule "wc-mode"]
 	path = lib/wc-mode
 	url = https://github.com/bnbeckwith/wc-mode.git
