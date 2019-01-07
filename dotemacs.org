@@ -494,11 +494,8 @@ If the universal prefix argument is used then will the windows too."
 
 ** Ox-tufte-latex
 [2018-11-13 Tue 10:32]
-#+BEGIN_src emacs-lisp :tangle no
-(use-package ox-tufte-latex
-  :straight (ox-tufte-latex 
-           :host github
-           :repo "tsdye/tufte-org-mode"))
+#+BEGIN_src emacs-lisp 
+(use-package ox-tufte-latex)
 #+END_SRC
 
 ** Critic Markup
@@ -2233,7 +2230,7 @@ In the future, I'd like to:
 - Automatically highlight the wrapped region *in Emacs*
 **** Latex settings
 
-#+BEGIN_src emacs-lisp  :tangle no 
+#+BEGIN_src emacs-lisp  
 
 (add-to-list 'org-latex-classes
 	     '("beamer"
@@ -3116,33 +3113,6 @@ current heading, or the heading indicated by optional argument ID."
 
 ** All packages that are needed
 
-#+BEGIN_src emacs-lisp  :tangle no
-(setq org-bala-packages 
-'(
-  org-gcal
-  easy-hugo
-  (beancount :location (recipe
-                        :fetcher bitbucket
-                        :repo blais/beancount
-                        :files ("editors/emacs/beancount.el")))
-  org-clock-convenience
-  all-the-icons
-  wrap-region
-  mu4e-conversation
-  olivetti
-  hide-lines
-  fountain-mode
-  typo
-  writegood-mode
-  wc-mode
-  w3m
-  helm-w3m
-  (ox-tufte-latex :location (recipe
-                             :fetcher github
-                             :repo tsdye/tufte-org-mode))
-  ))
-#+END_SRC
-
 #+BEGIN_src emacs-lisp   
 (use-package mu4e-conversation
 
@@ -3308,11 +3278,6 @@ Alternate melpa, org and gnu package repos
 #+end_src
 
 #+begin_src emacs-lisp   
-;; (eval-when-compile
-;; (setq-default custom-file (expand-file-name "custom.el" user-emacs-directory))
-;; (when (file-exists-p custom-file)
-;; (load custom-file)))
-
 (eval-and-compile
 (add-hook 'emacs-startup-hook '(lambda ()
                 (setq gc-cons-threshold 16777216

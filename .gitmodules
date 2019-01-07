@@ -278,6 +278,9 @@
 	path = lib/ox-reveal
 	url = https://github.com/yjwen/org-reveal.git
 	ignore = dirty
+[submodule "ox-tufte-latex"]
+	path = lib/ox-tufte-latex
+	url = https://github.com/tsdye/tufte-org-mode
 [submodule "packed"]
 	path = lib/packed
 	url = https://github.com/emacscollective/packed.git
@@ -342,13 +345,13 @@
 	path = lib/shell-pop
 	url = https://github.com/kyagi/shell-pop-el.git
 	ignore = dirty
+[borg]
+	pushDefault = locutus
+	collective = emacsg
 [submodule "smartparens"]
 	path = lib/smartparens
 	url = https://github.com/Fuco1/smartparens.git
 	ignore = dirty
-[borg]
-	pushDefault = locutus
-	collective = emacsg
 [submodule "spaceline"]
 	path = lib/spaceline
 	url = https://github.com/TheBB/spaceline.git
