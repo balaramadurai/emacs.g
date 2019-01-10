@@ -22,7 +22,7 @@ Once you have installed Emacs, you can start with this. Copy the following comma
 #+begin_example
  # if you have a pre-existing config, also backup your .emacs from your home directory
 mv .emacs.d .emacs.d.bak  
-git clone  --recurse-submodules http://github.com/balaramadurai/emacs.g ~/.emacs.d
+git clone  --recurse-submodules http://github.com/balaramadurai/.emacs.d
 # Launch emacs and enjoy!
 #+end_example
 
@@ -43,7 +43,7 @@ One way to use this config.org to make it your own is:
 #+begin_example
  # if you have a pre-existing config, also backup your .emacs from your home directory
 mv .emacs.d .emacs.d.bak  
-git clone --recurse-submodules http://github.com/balaramadurai/emacs.g ~/.emacs.d
+git clone --recurse-submodules http://github.com/balaramadurai/.emacs.d
 #+end_example
 
 ** Step 2: Configure your spacemacs.secret.org
