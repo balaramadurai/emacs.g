@@ -30,6 +30,7 @@ This is a modest version of the super amazing package called Spacemacs!
   - [[#org-mode][Org Mode]]
   - [[#lua][Lua]]
   - [[#mu4e][Mu4e]]
+  - [[#mu4e-conversation][Mu4e Conversation]]
   - [[#password-generator][Password generator]]
   - [[#persp-mode][Persp Mode]]
   - [[#projectile][Projectile]]
@@ -39,10 +40,12 @@ This is a modest version of the super amazing package called Spacemacs!
   - [[#shell-pop][Shell pop]]
   - [[#toc-org][TOC org]]
   - [[#undo-tree][Undo Tree]]
-  - [[#w3m][w3m]]
+  - [[#w3m][W3m]]
   - [[#writeroom][Writeroom]]
   - [[#writing-mode][Writing Mode]]
-  - [[#all-packages-that-are-needed][All packages that are needed]]
+  - [[#yasnippet][Yasnippet]]
+  - [[#yequake][Yequake]]
+  - [[#zoom][Zoom]]
 - [[#look--feel][Look & Feel]]
   - [[#theme][Theme]]
   - [[#window-numbering][Window Numbering]]
@@ -420,6 +423,7 @@ If the universal prefix argument is used then will the windows too."
   :diminish (which-key-mode . " Ⓚ")
   :config
   (which-key-mode)
+  (setq which-key-popup-type 'minibuffer)
   (setq which-key-sort-order 'which-key-key-order-alpha)
   (setq which-key-idle-delay 0.25)
   (setq which-key-echo-keystrokes 0.18)
@@ -801,7 +805,7 @@ For instance pass En as source for English."
      ":"    'org-set-tags-command
      "*"    'org-ctrl-c-star
      "a"    'org-agenda
-     "A"    'org-archive-subtree
+     "A"    'org-attach
      "c"    'org-capture
      "C"    '(:ignore t :which-key "Clocks")
      "Ci"   'org-clock-in
@@ -826,6 +830,7 @@ For instance pass En as source for English."
      "Ry"   'yearly-review
      "s"    '(:ignore t :which-key "subtrees")
      "sc"   'org-copy-subtree
+     "sa"    'org-archive-subtree
      "<right>" 'org-agenda-do-date-later
      "<left>" 'org-agenda-do-date-earlier
      "x"    'my/org-agenda-done
@@ -931,7 +936,7 @@ For instance pass En as source for English."
                "* SOMEDAY %?\n")
 	     ("u" "uri" entry
               (file+headline "~/org/notes.org" "Bookmarks")
-              "** %:annotation\nCaptured on %u\n    Source: %:link \n    %i")
+              "%(org-web-tools--url-as-readable-org)\n  ** %:annotation\nCaptured on %u\n    Source: %:link \n    %i")
               )))
 #+END_SRC
 
@@ -2447,6 +2452,12 @@ In the future, I'd like to:
   (require 'ox-reveal)
 )
 #+end_src
+*** Org web tools
+[2019-01-09 Wed 13:03]
+#+begin_src emacs-lisp
+(use-package org-web-tools
+  :require esxml)
+#+end_src
 *** Gnuplot
 [2018-12-05 Wed 09:33]
 #+begin_src emacs-lisp   
@@ -2902,20 +2913,28 @@ current heading, or the heading indicated by optional argument ID."
     ))
 #+END_SRC
 
+** Mu4e Conversation
+
+#+BEGIN_src emacs-lisp   
+(use-package mu4e-conversation
+  )
+#+END_SRC
+
 ** Password generator
 [2018-12-06 Thu 21:17]
 #+begin_src emacs-lisp   
 (use-package password-generator
 
-; :diminish
-:general
-(spacemacs-lite/set-leader-keys
-        "ip1" 'password-generator-simple
-        "ip2" 'password-generator-strong
-        "ip3" 'password-generator-paranoid
-        "ipp" 'password-generator-phonetic
-        "ipn" 'password-generator-numeric)
-; :config
+					; :diminish
+  :general
+  (spacemacs-lite/set-leader-keys
+    "ip"  '(:ignore t :wk "password-generator")
+    "ip1" 'password-generator-simple
+    "ip2" 'password-generator-strong
+    "ip3" 'password-generator-paranoid
+    "ipp" 'password-generator-phonetic
+    "ipn" 'password-generator-numeric)
+					; :config
 )
 #+end_src
 ** Persp Mode 
@@ -3012,7 +3031,7 @@ current heading, or the heading indicated by optional argument ID."
 
 
 #+end_src
-** w3m
+** W3m
 [2018-11-13 Tue 10:00]
 #+BEGIN_src emacs-lisp   
 (use-package w3m
@@ -3111,14 +3130,45 @@ current heading, or the heading indicated by optional argument ID."
 
 #+END_SRC
 
-** All packages that are needed
+** Yasnippet
+[2019-01-08 Tue 07:07]
+#+begin_src emacs-lisp 
+(use-package yasnippet
 
-#+BEGIN_src emacs-lisp   
-(use-package mu4e-conversation
-
+;:quelpa (<package-name> :fetcher <github|bitbucket> :repo <name of repo> :files ("<path>/<file.el>")
+;) 
+  :diminish (yas-minor-mode . "ⓨ")
+; :general
+; :config
 )
-#+END_SRC
+#+end_src
 
+** Yequake
+[2019-01-09 Wed 12:44]
+#+begin_src emacs-lisp
+(use-package yequake
+  ;; :quelpa (yequake :fetcher github :repo "alphapapa/yequake")
+
+  :custom
+  (yequake-frames
+   '(("org-capture" 
+      (buffer-fns . (yequake-org-capture))
+      (width . 0.75)
+      (height . 0.5)
+      (alpha . 0.95)
+      (frame-parameters . ((undecorated . t)
+                           (skip-taskbar . t)
+                           (sticky . t)))))))
+#+end_src
+** Zoom
+[2019-01-09 Wed 09:42]
+#+begin_src emacs-lisp
+(use-package zoom
+  :config
+  ;; Golden Ratio
+  (setq zoom-size '(0.618 . 0.618))
+  (zoom-mode t))
+#+end_src
 * Look & Feel
 ** Theme
 #+BEGIN_src emacs-lisp  
@@ -3132,7 +3182,8 @@ current heading, or the heading indicated by optional argument ID."
 
 :general
 (spacemacs-lite/set-leader-keys "1" 'winum-select-window-1
-            "2" 'winum-select-window-2)
+  "2" 'winum-select-window-2
+  "3" 'winum-select-window-3)
 :config
 (setq winum-auto-setup-mode-line nil)
 )

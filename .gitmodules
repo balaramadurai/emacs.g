@@ -104,6 +104,10 @@
 	path = lib/ess
 	url = https://github.com/emacs-ess/ESS.git
 	ignore = dirty
+[submodule "esxml"]
+	path = lib/esxml
+	url = git@github.com:tali713/esxml.git
+	ignore = dirty
 [submodule "evil"]
 	path = lib/evil
 	url = https://github.com/emacs-evil/evil.git
@@ -274,6 +278,10 @@
 	path = lib/org-ref
 	url = https://github.com/jkitchin/org-ref.git
 	ignore = dirty
+[submodule "org-web-tools"]
+	path = lib/org-web-tools
+	url = git@github.com:alphapapa/org-web-tools.git
+	ignore = dirty
 [submodule "ox-reveal"]
 	path = lib/ox-reveal
 	url = https://github.com/yjwen/org-reveal.git
@@ -281,6 +289,7 @@
 [submodule "ox-tufte-latex"]
 	path = lib/ox-tufte-latex
 	url = https://github.com/tsdye/tufte-org-mode
+	ignore = dirty
 [submodule "packed"]
 	path = lib/packed
 	url = https://github.com/emacscollective/packed.git
@@ -337,6 +346,9 @@
 	path = lib/restart-emacs
 	url = https://github.com/iqbalansari/restart-emacs.git
 	ignore = dirty
+[borg]
+	pushDefault = locutus
+	collective = emacsg
 [submodule "s"]
 	path = lib/s
 	url = https://github.com/magnars/s.el.git
@@ -345,9 +357,6 @@
 	path = lib/shell-pop
 	url = https://github.com/kyagi/shell-pop-el.git
 	ignore = dirty
-[borg]
-	pushDefault = locutus
-	collective = emacsg
 [submodule "smartparens"]
 	path = lib/smartparens
 	url = https://github.com/Fuco1/smartparens.git
@@ -411,4 +420,16 @@
 [submodule "writeroom-mode"]
 	path = lib/writeroom-mode
 	url = https://github.com/joostkremers/writeroom-mode.git
+	ignore = dirty
+[submodule "yasnippet"]
+	path = lib/yasnippet
+	url = git@github.com:joaotavora/yasnippet.git
+	ignore = dirty
+[submodule "yequake"]
+	path = lib/yequake
+	url = git@github.com:alphapapa/yequake.git
+	ignore = dirty
+[submodule "zoom"]
+	path = lib/zoom
+	url = git@github.com:cyrus-and/zoom.git
 	ignore = dirty
