@@ -312,7 +312,7 @@
 	ignore = dirty
 [submodule "persp-mode"]
 	path = lib/persp-mode
-	url = https://github.com/Bad-ptr/persp-mode.el.git
+	url = git@github.com:Bad-ptr/persp-mode.el.git
 	ignore = dirty
 [submodule "poet-theme"]
 	path = lib/poet-theme
@@ -334,6 +334,9 @@
 	path = lib/quelpa-use-package
 	url = https://framagit.org/steckerhalter/quelpa-use-package.git
 	ignore = dirty
+[borg]
+	pushDefault = locutus
+	collective = emacsg
 [submodule "ranger"]
 	path = lib/ranger
 	url = https://github.com/ralesi/ranger.el.git
@@ -346,9 +349,6 @@
 	path = lib/restart-emacs
 	url = https://github.com/iqbalansari/restart-emacs.git
 	ignore = dirty
-[borg]
-	pushDefault = locutus
-	collective = emacsg
 [submodule "s"]
 	path = lib/s
 	url = https://github.com/magnars/s.el.git

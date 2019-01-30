@@ -265,6 +265,14 @@ If the universal prefix argument is used then will the windows too."
   "Loads `dichromacy' theme"
   (interactive)
   (load-theme 'dichromacy))
+
+(defun org-journal-find-location ()
+  ;; Open today's journal, but specify a non-nil prefix argument in order to
+  ;; inhibit inserting the heading; org-capture will insert the heading.
+  (org-journal-new-entry t)
+  ;; Position point on the journal's top-level heading so that org-capture
+  ;; will add the new entry as a child entry.
+  (goto-char (point-min)))
 #+end_src
 
 * Packages
@@ -914,12 +922,14 @@ For instance pass En as source for English."
                "* TODO %?\nSCHEDULED: %^{Time of task?}T\n%U\n%a\n\n")
               ("R" "respond" entry (file "~/org/inbox.org")
                "* TODO Respond to %:from on %:subject\nSCHEDULED: %^{Time of Response?}T\n%U\n%a\n")
+	      ("j" "Journal entry" entry (file+datetree "~/org/journal.org")
+               :tree-type week)
               ("n" "note" entry (file "~/org/notes.org")
-               "* %? :NOTE:\n%U\n%a\n")
+               "* %? :NOTE:\n%U\n")
               ("T" "Meeting" entry (file "~/org/inbox.org")
                "* MEETING with %? :MEETING:\n%U" :clock-in t :clock-resume t)
-	            ("p" "Project" entry (file+headline "~/org/todo.org" "1 Projects")
-	             (file "~/org/templates/project-template.org"))
+	      ("p" "Project" entry (file+headline "~/org/todo.org" "1 Projects")
+	       (file "~/org/templates/project-template.org"))
               ("r" "Reviews")
               ("rw" "Review: Weekly Review" entry (file+olp+datetree "~/org/reviews.org" )
                (file "~/org/templates/weeklyreviewtemplate.org") :tree-type week)
@@ -930,13 +940,13 @@ For instance pass En as source for English."
               ("P" "Plan Travel")
               ("Pv" "Plan Personal Vacation" entry (file+headline "~/org/todo.org" "1 Projects")
                (file "~/org/templates/newtraveltemplate.org"))
-               ("Pb" "Plan Business Travel" entry (file+headline "~/org/todo.org" "1 Projects")
+              ("Pb" "Plan Business Travel" entry (file+headline "~/org/todo.org" "1 Projects")
                (file "~/org/templates/newsolotraveltemplate.org"))
-             ("s" "Someday / Maybe Idea" entry (file+headline "~/org/somedaymaybe.org" "Someday / Maybe")
+              ("s" "Someday / Maybe Idea" entry (file+headline "~/org/somedaymaybe.org" "Someday / Maybe")
                "* SOMEDAY %?\n")
-	     ("u" "uri" entry
-              (file+headline "~/org/notes.org" "Bookmarks")
-              "%(org-web-tools--url-as-readable-org)\n  ** %:annotation\nCaptured on %u\n    Source: %:link \n    %i")
+	      ("u" "uri" entry
+               (file+headline "~/org/notes.org" "Bookmarks")
+               "%(org-web-tools--url-as-readable-org)\n  ** %:annotation\nCaptured on %u\n    Source: %:link \n    %i")
               )))
 #+END_SRC
 
@@ -1003,7 +1013,7 @@ For instance pass En as source for English."
           (tags "CProj"
                 ((org-agenda-overriding-header "Current Project")
                  (org-tags-match-list-sublevels nil)))
-          (tags "CQuarter"
+          (tags "+CQuarter+Cyear"
                 ((org-agenda-overriding-header "Completed Projects in this Quarter")
                  (org-tags-match-list-sublevels nil)))
           (tags-todo "-CANCELLED-HOLD+Proj/!"
@@ -2341,6 +2351,18 @@ In the future, I'd like to:
 ; :config
 )
 #+end_src
+*** Org Journal
+[2019-01-15 Tue 21:05]
+#+begin_src emacs-lisp 
+(use-package org-journal
+
+;:quelpa (<package-name> :fetcher <github|bitbucket> :repo <name of repo> :files ("<path>/<file.el>")
+;) :diminish
+; :general
+ :config
+ (setq org-journal-dir "~/org/journal/")
+)
+#+end_src
 *** Org Pomodoro
 [2018-11-29 Thu 08:54]
 #+begin_src emacs-lisp   
@@ -2937,13 +2959,23 @@ current heading, or the heading indicated by optional argument ID."
 					; :config
 )
 #+end_src
-** Persp Mode 
-[2018-12-04 Tue 04:50]
-#+begin_src emacs-lisp   
+** Persp Mode
+[2019-01-16 Wed 18:26]
+#+begin_src emacs-lisp 
 (use-package persp-mode
+:init
+    (progn
+      (setq persp-nil-name "main"
+            persp-reset-windows-on-nil-window-conf nil
+            persp-set-last-persp-for-new-frames nil
+            persp-save-dir "~/.emacs.d/persp-confs"
+            persp-set-ido-hooks t))
+
+;:quelpa (<package-name> :fetcher <github|bitbucket> :repo <name of repo> :files ("<path>/<file.el>")
+;) :diminish
+; :general
 )
 #+end_src
-
 ** Projectile
 [2018-12-04 Tue 08:55]
 #+begin_src emacs-lisp   
@@ -3002,7 +3034,7 @@ current heading, or the heading indicated by optional argument ID."
   (setq shell-pop-full-span t)
   (setq shell-pop-window-position "bottom") 
   :general
-  (spacemacs-lite/set-leader-keys "T" 'shell-pop))
+  (spacemacs-lite/set-leader-keys "at" 'shell-pop))
 #+end_src
 ** TOC org
 [2018-12-05 Wed 08:39]
@@ -3044,7 +3076,6 @@ current heading, or the heading indicated by optional argument ID."
   (setq w3m-search-default-engine "duckduckgo")
 )
 #+END_SRC
-
 ** Writeroom
 #+BEGIN_src emacs-lisp  
 (use-package writeroom-mode
