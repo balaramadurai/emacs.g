@@ -266,13 +266,6 @@ If the universal prefix argument is used then will the windows too."
   (interactive)
   (load-theme 'dichromacy))
 
-(defun org-journal-find-location ()
-  ;; Open today's journal, but specify a non-nil prefix argument in order to
-  ;; inhibit inserting the heading; org-capture will insert the heading.
-  (org-journal-new-entry t)
-  ;; Position point on the journal's top-level heading so that org-capture
-  ;; will add the new entry as a child entry.
-  (goto-char (point-min)))
 #+end_src
 
 * Packages
@@ -2349,18 +2342,6 @@ In the future, I'd like to:
     )
     
 ; :config
-)
-#+end_src
-*** Org Journal
-[2019-01-15 Tue 21:05]
-#+begin_src emacs-lisp 
-(use-package org-journal
-
-;:quelpa (<package-name> :fetcher <github|bitbucket> :repo <name of repo> :files ("<path>/<file.el>")
-;) :diminish
-; :general
- :config
- (setq org-journal-dir "~/org/journal/")
 )
 #+end_src
 *** Org Pomodoro
