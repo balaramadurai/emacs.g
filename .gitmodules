@@ -330,13 +330,13 @@
 	path = lib/quelpa
 	url = https://framagit.org/steckerhalter/quelpa.git
 	ignore = dirty
+[borg]
+	pushDefault = locutus
+	collective = emacsg
 [submodule "quelpa-use-package"]
 	path = lib/quelpa-use-package
 	url = https://framagit.org/steckerhalter/quelpa-use-package.git
 	ignore = dirty
-[borg]
-	pushDefault = locutus
-	collective = emacsg
 [submodule "ranger"]
 	path = lib/ranger
 	url = https://github.com/ralesi/ranger.el.git

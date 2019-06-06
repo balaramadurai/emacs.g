@@ -3,7 +3,7 @@
 
 This is a modest version of the super amazing package called Spacemacs!
 
-* Index :TOC_2_gh:
+* Index :TOC_3_gh:
 - [[#initial][Initial]]
   - [[#who-am-i][Who am I]]
 - [[#functions][Functions]]
@@ -39,6 +39,7 @@ This is a modest version of the super amazing package called Spacemacs!
   - [[#smartparens][Smartparens]]
   - [[#shell-pop][Shell pop]]
   - [[#toc-org][TOC org]]
+  - [[#todoist][Todoist]]
   - [[#undo-tree][Undo Tree]]
   - [[#w3m][W3m]]
   - [[#writeroom][Writeroom]]
@@ -103,7 +104,7 @@ Initialization of the startup file. I made a design choice of moving to an org f
 (setq load-prefer-newer t)
 (use-package quelpa-use-package
   :init (setq quelpa-update-melpa-p nil))
-(server-start)
+;; (server-start)
 #+end_src
 
 ** Who am I
@@ -1043,7 +1044,7 @@ For instance pass En as source for English."
                 ((org-agenda-overriding-header "Tasks to Archive")
                  (org-agenda-skip-function 'bh/skip-non-archivable-tasks)
                  (org-tags-match-list-sublevels nil))))
-         ((org-agenda-files '("~/org/todo.org" "~/org/memacs/calls.org" "~/org/memacs/mumail.org" "~/org/memacs/sms.org")))
+         ((org-agenda-files '("~/org/todo.org" "~/org/inbox.org" "~/org/memacs/calls.org" "~/org/memacs/mumail.org" "~/org/memacs/sms.org")))
          ("~/org/Reviews/2018-W.pdf"))
         ("rq" "Quarterly Review"
          ((tags "CProj"
@@ -1197,6 +1198,15 @@ These are my standard add-on library paths
 (setq org-log-done (quote time))
 (setq org-log-into-drawer t)
 (setq org-log-state-notes-insert-after-drawers nil)
+(setq org-log-note-headings '((done        . "CLOSING NOTE %t")
+                              (state       . "State %-12s from %-12S %t")
+                              (note        . "Note taken on %t")
+                              (reschedule  . "Schedule changed on %t: %S -> %s")
+                              (delschedule . "Not scheduled, was %S on %t")
+                              (redeadline  . "Deadline changed on %t: %S -> %s")
+                              (deldeadline . "Removed deadline, was %S on %t")
+                              (refile      . "Refiled on %t")
+                              (clock-out   . "")))
 #+END_SRC
 
 **** Insert inactive timestamps and exclude from export
@@ -1362,7 +1372,6 @@ org-mode.
              )))
 #+END_SRC
 
-
 **** Next is for tasks
 :PROPERTIES:
 :CUSTOM_ID: NextTasks
@@ -1456,6 +1465,16 @@ to allow editing again.
 #+BEGIN_src emacs-lisp   
 (setq org-catch-invisible-edits 'smart)
 #+END_SRC
+
+****  In collapsed view, hide empty lines between subtrees
+[2019-06-04 Tue 08:33]
+
+Set org-cycle-separator-lines to 0. Gives a more compact and consistent view, especially in a large Org file with many headings.
+
+#+BEGIN_src emacs-lisp   
+(setq org-cycle-separator-lines 0)
+#+END_SRC
+
 
 **** Use utf-8 as default coding system
 :PROPERTIES:
@@ -2996,7 +3015,7 @@ current heading, or the heading indicated by optional argument ID."
 
 ** Smartparens
 [2018-12-04 Tue 15:33]
-#+begin_src emacs-lisp   
+#+begin_src emacs-lisp :tangle no 
 (use-package smartparens
 
 :diminish (smartparens-mode . " Ⓢ"))
