@@ -1,0 +1,16 @@
+# -*- mode: snippet -*-
+# name: Cab request
+# key: cab
+# --
+Hello ${1:`(bjm/mu4e-get-names-for-yasnippet)`},
+  How are you? Would it be possible for you to help me with a cab request from my home to Symbiosis and back?
+
+Pickup Date and time: ${1:`(format-time-string "%d %b %Y")'`}, 08:30am
+
+My address: 18, Pradnya Bhushan - B, Pradnya Park
+Near Rohan Garden
+Landmark - Eklavya College
+Kothrud
+Mobile: 99750 57144
+Thank you for your help and have a good day!!
+Bala

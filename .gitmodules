@@ -246,6 +246,9 @@
 	path = lib/olivetti
 	url = https://github.com/rnkn/olivetti.git
 	ignore = dirty
+[submodule "openwith"]
+	path = lib/openwith
+	url = git@github.com:emacsmirror/openwith.git
 [submodule "org"]
 	path = lib/org
 	url = git@code.orgmode.org:bzg/org-mode.git
@@ -326,13 +329,13 @@
 	path = lib/projectile
 	url = https://github.com/bbatsov/projectile.git
 	ignore = dirty
+[borg]
+	pushDefault = locutus
+	collective = emacsg
 [submodule "quelpa"]
 	path = lib/quelpa
 	url = https://framagit.org/steckerhalter/quelpa.git
 	ignore = dirty
-[borg]
-	pushDefault = locutus
-	collective = emacsg
 [submodule "quelpa-use-package"]
 	path = lib/quelpa-use-package
 	url = https://framagit.org/steckerhalter/quelpa-use-package.git

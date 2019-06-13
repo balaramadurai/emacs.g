@@ -1211,7 +1211,7 @@ These are my standard add-on library paths
 
 **** Insert inactive timestamps and exclude from export
 
-#+BEGIN_src emacs-lisp   
+#+BEGIN_src emacs-lisp   :tangle no
 
 (setq require-final-newline t)
 
@@ -2984,7 +2984,7 @@ current heading, or the heading indicated by optional argument ID."
 :diminish (projectile-mode . " ⓟ"))
 #+end_src
 ** Ranger
-#+BEGIN_src emacs-lisp   
+#+BEGIN_src emacs-lisp  :tangle no 
   ;; Ranger
   (use-package ranger 
     

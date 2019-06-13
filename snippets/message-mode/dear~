@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: dear name
+# key: re
+# --
+Hello ${1:`(bjm/mu4e-get-names-for-yasnippet)`},
+  Thank you for your email.
+$0
+
+Thanks and have a great day!
+Bala 

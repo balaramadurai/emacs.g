@@ -1,0 +1,17 @@
+# -*- mode: snippet -*-
+# name: Invoice for the month
+# key: inv
+# --
+Subject: Invoice for ${1:`(format-time-string "%b %Y")'`}
+
+Hello,
+Please find attached the invoice for the services of Dr. Bala Ramadurai at SIBM for the month of ${1:`(format-time-string "%b %Y")'`}.
+
+If you have any questions about the invoice, please do let us know.
+
+Please acknowledge the receipt of the invoice.
+
+Thanks and have a good day
+Accounts
+on behalf of Dr. Bala Ramadurai
+http://balaramadurai.net

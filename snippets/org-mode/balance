@@ -1,0 +1,14 @@
+# -*- mode: snippet -*-
+# name: balance
+# key: bal
+# --
+
+2018-05-05 balance Assets:Liquid:HDFCBank:Savings:CMHRd  295,778.62 INR
+2018-05-05 balance Assets:Liquid:HDFCBank:Savings:Thippasandra  32,639.17 INR
+2018-05-05 balance Assets:Liquid:HDFCBank:Current:Lunu  25,000.00 INR
+2018-05-05 balance Liabilities:HDFCRegaliaCreditCard 0.00 INR
+2018-05-05 balance Assets:Liquid:HDFCBank:Current:Annu 25,000.00 INR
+2018-05-05 balance Assets:Liquid:Citibank:Lunu 74,426.54 INR
+2018-05-05 balance Liabilities:CC-Citibank-Lunu -20,956.13 INR
+2018-05-05 balance Assets:Liquid:SBISahakarNagar 330,095.42 INR
+2018-05-05 balance Assets:Liquid:Cash:Wallet 13500 INR

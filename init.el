@@ -52,6 +52,7 @@
  '(custom-safe-themes
    (quote
     ("aaeb61894d5d3c586d27cee61a3f54493c383733f8d900e05c6fbc8ef6d6bc93" "c53b6a09c7d997c3185cb1598de1d0ff15e1679f5445f9a6cb8b2bf4fc4e565a" "c8d19a09f9d2cb1d6aa6c57e1a86b2dab863cc77a3fc7225a4e60baba96726a1" "fa2b58bb98b62c3b8cf3b6f02f058ef7827a8e497125de0254f56e373abee088" "436b185b423b78eb5d110dc23f4b95d78a1f002d156f226b7e6e5b1f6493dda0" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" default)))
+ '(dired-find-subdir nil)
  '(fci-rule-color "#dedede")
  '(line-spacing 0.2)
  '(pdf-view-midnight-colors (quote ("#b2b2b2" . "#292b2e")))
