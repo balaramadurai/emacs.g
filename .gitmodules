@@ -98,7 +98,7 @@
 	ignore = dirty
 [submodule "epkg"]
 	path = lib/epkg
-	url = https://github.com/emacscollective/epkg.git
+	url = git://github.com/emacscollective/epkg.git lib/epkg
 	ignore = dirty
 [submodule "ess"]
 	path = lib/ess
