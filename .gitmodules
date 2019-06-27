@@ -96,10 +96,6 @@
 	path = lib/emojify
 	url = https://github.com/iqbalansari/emacs-emojify.git
 	ignore = dirty
-[submodule "epkg"]
-	path = lib/epkg
-	url = git://github.com/emacscollective/epkg.git lib/epkg
-	ignore = dirty
 [submodule "ess"]
 	path = lib/ess
 	url = https://github.com/emacs-ess/ESS.git
