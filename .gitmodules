@@ -6,6 +6,9 @@
 	path = lib/alert
 	url = https://github.com/jwiegley/alert.git
 	ignore = dirty
+[submodule "android-mode"]
+	path = lib/android-mode
+	url = git@github.com:remvee/android-mode.git
 [submodule "async"]
 	path = lib/async
 	url = https://github.com/jwiegley/emacs-async.git
@@ -34,6 +37,9 @@
 	path = lib/calfw
 	url = https://github.com/kiwanami/emacs-calfw.git
 	ignore = dirty
+[submodule "centaur-tabs"]
+	path = lib/centaur-tabs
+	url = https://github.com/ema2159/centaur-tabs/
 [submodule "closql"]
 	path = lib/closql
 	url = https://github.com/emacscollective/closql.git
@@ -79,6 +85,9 @@
 	path = lib/diminish
 	url = https://github.com/myrjola/diminish.el.git
 	ignore = dirty
+[submodule "dired-toggle"]
+	path = lib/dired-toggle
+	url = git@github.com:fasheng/dired-toggle.git
 [submodule "easy-hugo"]
 	path = lib/easy-hugo
 	url = https://github.com/masasam/emacs-easy-hugo.git
@@ -285,6 +294,9 @@
 	path = lib/org-web-tools
 	url = git@github.com:alphapapa/org-web-tools.git
 	ignore = dirty
+[submodule "org-wunderlist"]
+	path = lib/org-wunderlist
+	url = git@github.com:myuhe/org-wunderlist.el.git
 [submodule "ox-reveal"]
 	path = lib/ox-reveal
 	url = https://github.com/yjwen/org-reveal.git
@@ -309,6 +321,9 @@
 	path = lib/password-generator
 	url = https://github.com/zargener/emacs-password-genarator.git
 	ignore = dirty
+[borg]
+	pushDefault = locutus
+	collective = emacsg
 [submodule "pdf-tools"]
 	path = lib/pdf-tools
 	url = https://github.com/politza/pdf-tools.git
@@ -329,9 +344,6 @@
 	path = lib/projectile
 	url = https://github.com/bbatsov/projectile.git
 	ignore = dirty
-[borg]
-	pushDefault = locutus
-	collective = emacsg
 [submodule "quelpa"]
 	path = lib/quelpa
 	url = https://framagit.org/steckerhalter/quelpa.git
@@ -372,10 +384,16 @@
 	path = lib/spacemacs-theme
 	url = git@github.com:nashamri/spacemacs-theme.git
 	ignore = dirty
+[submodule "theme-magic"]
+	path = lib/theme-magic
+	url = https://github.com/jcaw/theme-magic/
 [submodule "toc-org"]
 	path = lib/toc-org
 	url = https://github.com/snosov1/toc-org.git
 	ignore = dirty
+[submodule "treemacs"]
+	path = lib/treemacs
+	url = git@github.com:Alexander-Miller/treemacs.git
 [submodule "typo"]
 	path = lib/typo
 	url = https://github.com/jorgenschaefer/typoel.git
@@ -391,10 +409,6 @@
 [submodule "visual-fill-column"]
 	path = lib/visual-fill-column
 	url = https://github.com/joostkremers/visual-fill-column.git
-	ignore = dirty
-[submodule "w3m"]
-	path = lib/w3m
-	url = https://github.com/emacsorphanage/w3m.git
 	ignore = dirty
 [submodule "wc-mode"]
 	path = lib/wc-mode
@@ -432,6 +446,9 @@
 	path = lib/yequake
 	url = git@github.com:alphapapa/yequake.git
 	ignore = dirty
+[submodule "zenburn-theme"]
+	path = lib/zenburn-theme
+	url = git@github.com:bbatsov/zenburn-emacs.git
 [submodule "zoom"]
 	path = lib/zoom
 	url = git@github.com:cyrus-and/zoom.git

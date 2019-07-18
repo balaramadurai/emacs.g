@@ -12,15 +12,22 @@ This is a modest version of the super amazing package called Spacemacs!
   - [[#general][General]]
   - [[#which-key][Which Key]]
   - [[#helm][Helm]]
+  - [[#android-mode][Android mode]]
   - [[#beancount][Beancount]]
   - [[#borg-queen][Borg Queen]]
   - [[#ox-tufte-latex][Ox-tufte-latex]]
+  - [[#centaur-tabs][Centaur Tabs]]
   - [[#critic-markup][Critic Markup]]
   - [[#company][Company]]
+  - [[#dired-toggle][Dired Toggle]]
   - [[#easy-hugo][Easy Hugo]]
   - [[#emoji][Emoji]]
   - [[#ess][ESS]]
   - [[#evil][Evil]]
+    - [[#evil-commentary][Evil commentary]]
+    - [[#unimpaired][Unimpaired]]
+    - [[#evil-tutor][Evil Tutor]]
+    - [[#evil-magit][Evil Magit]]
   - [[#eyebrowse][EyeBrowse]]
   - [[#fountain][Fountain]]
   - [[#gcal][Gcal]]
@@ -28,8 +35,28 @@ This is a modest version of the super amazing package called Spacemacs!
   - [[#magit][Magit]]
   - [[#olivetti--typo][Olivetti & typo]]
   - [[#org-mode][Org Mode]]
+    - [[#org-mode-package-definition-with-keybindings][Org mode package definition with keybindings]]
+    - [[#org-mode-setup][Org mode Setup]]
+    - [[#org-config][Org Config]]
+    - [[#org-bullets][Org Bullets]]
+    - [[#org-calfw][Org Calfw]]
+    - [[#org-clock-convenience][Org clock convenience]]
+    - [[#org-download][Org Download]]
+    - [[#org-pomodoro][Org Pomodoro]]
+    - [[#org-present][Org Present]]
+    - [[#org-ref][Org Ref]]
+    - [[#org-reveal][Org Reveal]]
+    - [[#org-web-tools][Org web tools]]
+    - [[#gnuplot][Gnuplot]]
   - [[#lua][Lua]]
   - [[#mu4e][Mu4e]]
+    - [[#main-mu4e-config][Main Mu4e config]]
+    - [[#headers-view-config][Header's view config]]
+    - [[#editor-view-config][Editor view config]]
+    - [[#mu4e-maildirs-extension][mu4e-maildirs-extension]]
+    - [[#misc-mu4e][Misc Mu4e]]
+    - [[#thread-only][Thread only]]
+    - [[#org-mode-mu4e-integration][Org mode mu4e integration]]
   - [[#mu4e-conversation][Mu4e Conversation]]
   - [[#password-generator][Password generator]]
   - [[#persp-mode][Persp Mode]]
@@ -38,12 +65,13 @@ This is a modest version of the super amazing package called Spacemacs!
   - [[#restart-emacs][Restart Emacs]]
   - [[#smartparens][Smartparens]]
   - [[#shell-pop][Shell pop]]
+  - [[#theme-magic][Theme Magic]]
   - [[#toc-org][TOC org]]
-  - [[#todoist][Todoist]]
   - [[#undo-tree][Undo Tree]]
   - [[#w3m][W3m]]
   - [[#writeroom][Writeroom]]
   - [[#writing-mode][Writing Mode]]
+  - [[#wunderlist][Wunderlist]]
   - [[#yasnippet][Yasnippet]]
   - [[#yequake][Yequake]]
   - [[#zoom][Zoom]]
@@ -53,6 +81,7 @@ This is a modest version of the super amazing package called Spacemacs!
   - [[#modeline][Modeline]]
   - [[#emacs-stuff][Emacs stuff]]
   - [[#graphical-features][Graphical Features]]
+    - [[#prettify-symbols][Prettify Symbols]]
 - [[#emacs-functionality][Emacs Functionality]]
   - [[#emacs-basics][Emacs Basics]]
   - [[#calendar][Calendar]]
@@ -120,6 +149,13 @@ My personal details
 * Functions
 [2018-12-07 Fri 21:06]
 #+begin_src emacs-lisp   
+(defun spacemacs/system-is-mac ()
+  (eq system-type 'darwin))
+(defun spacemacs/system-is-linux ()
+  (eq system-type 'gnu/linux))
+(defun spacemacs/system-is-mswindows ()
+(eq system-type 'windows-nt)) 
+
 ;; found at http://emacswiki.org/emacs/KillingBuffers
 (defun spacemacs-lite/kill-other-buffers (&optional arg)
   "Kill all other buffers.
@@ -130,6 +166,25 @@ If the universal prefix argument is used then will the windows too."
     (mapc 'kill-buffer (delq (current-buffer) (buffer-list)))
     (when (equal '(4) arg) (delete-other-windows))
     (message "Buffers deleted!")))
+
+;; from magnars
+(defun spacemacs-lite/delete-current-buffer-file ()
+  "Removes file connected to current buffer and kills buffer."
+  (interactive)
+  (let ((filename (buffer-file-name))
+        (buffer (current-buffer))
+        (name (buffer-name)))
+    (if (not (and filename (file-exists-p filename)))
+        (ido-kill-buffer)
+      (when (yes-or-no-p "Are you sure you want to delete this file? ")
+        (delete-file filename t)
+        (kill-buffer buffer)
+(message "File '%s' successfully removed" filename)))))
+
+(defun spacemacs-lite/copy-file ()
+  "Write the file under new name."
+  (interactive)
+(call-interactively 'write-file))
 
 ;; from magnars
   ;; http://stackoverflow.com/a/10216338/4869
@@ -152,6 +207,53 @@ If the universal prefix argument is used then will the windows too."
                 (insert (format "|sudo:%s" (or last-ssh-hostname "localhost"))))
 	      (buffer-string)))
            (t (concat "/sudo:root@localhost:" fname))))))
+
+;; from magnars
+(defun spacemacs-lite/rename-current-buffer-file ()
+  "Renames current buffer and file it is visiting."
+  (interactive)
+  (let* ((name (buffer-name))
+        (filename (buffer-file-name)))
+    (if (not (and filename (file-exists-p filename)))
+        (error "Buffer '%s' is not visiting a file!" name)
+      (let* ((dir (file-name-directory filename))
+             (new-name (read-file-name "New name: " dir)))
+        (cond ((get-buffer new-name)
+               (error "A buffer named '%s' already exists!" new-name))
+              (t
+               (let ((dir (file-name-directory new-name)))
+                 (when (and (not (file-exists-p dir)) (yes-or-no-p (format "Create directory '%s'?" dir)))
+                   (make-directory dir t)))
+               (rename-file filename new-name 1)
+               (rename-buffer new-name)
+               (set-visited-file-name new-name)
+               (set-buffer-modified-p nil)
+               (when (fboundp 'recentf-add-file)
+                   (recentf-add-file new-name)
+                   (recentf-remove-if-non-kept filename))
+(message "File '%s' successfully renamed to '%s'" name (file-name-nondirectory new-name))))))))
+
+(defun spacemacs//open-in-external-app (file-path)
+  "Open `file-path' in external application."
+  (cond
+   ((spacemacs/system-is-mswindows) (w32-shell-execute "open" (replace-regexp-in-string "/" "\\\\" file-path)))
+   ((spacemacs/system-is-mac) (shell-command (format "open \"%s\"" file-path)))
+   ((spacemacs/system-is-linux) (let ((process-connection-type nil))
+(start-process "" nil "xdg-open" file-path)))))
+
+(defun spacemacs-lite/open-file-or-directory-in-external-app (arg)
+  "Open current file in external application.
+If the universal prefix argument is used then open the folder
+containing the current file by the default explorer."
+  (interactive "P")
+  (if arg
+      (spacemacs//open-in-external-app (expand-file-name default-directory))
+    (let ((file-path (if (derived-mode-p 'dired-mode)
+                         (dired-get-file-for-visit)
+                       buffer-file-name)))
+      (if file-path
+          (spacemacs//open-in-external-app file-path)
+(message "No file associated to this buffer.")))))
 
 (defun copy-whole-buffer-to-clipboard ()
   "Copy entire buffer to clipboard"
@@ -306,6 +408,7 @@ If the universal prefix argument is used then will the windows too."
     (general-def
     "<f2>"             'org-agenda
     "<f5>"             'mu4e
+    "<f7>"             'org-gcal-fetch
     "M-]"              'next-buffer
     "M-["              'previous-buffer
     "C-+"              'text-scale-increase
@@ -354,6 +457,7 @@ If the universal prefix argument is used then will the windows too."
     "bm"   'show-messages-buffer
     "bh"   'show-home-buffer
     "bs"   'show-scratch-buffer
+    "bY"   'copy-whole-buffer-to-clipboard
     "TAB"  '(mode-line-other-buffer :wk "last buffer")
 
     ;; Comments
@@ -362,11 +466,15 @@ If the universal prefix argument is used then will the windows too."
 
     ;; file operations
     ;; "ff"   'find-file
+    "fc"   '(spacemacs-lite/copy-file :wk "copy-file")
+    "fD"   '(spacemacs-lite/delete-current-buffer-file :wk "delete-file") 
     "fe"   '(:ignore t :which-key "emacs")
-    "fE"   'spacemacs-lite/sudo-edit
+    "fE"   '(spacemacs-lite/sudo-edit :wk "sudo-edit")
     "fed"  'find-user-init-file
     "feR"  'load-user-init-file
     "fec"  'find-user-config-org-file
+    "fo"   '(spacemacs-lite/open-file-or-directory-in-external-app :wk "open-in-ext")
+    "fR"   '(spacemacs-lite/rename-current-buffer-file :wk "rename-file")
     "fs"   'save-buffer
 
     ;; help
@@ -484,6 +592,11 @@ If the universal prefix argument is used then will the windows too."
  :hook helm-mode-hook
 )
 #+end_src
+
+** Android mode
+#+begin_src emacs-lisp
+(use-package android-mode)
+#+end_src
 ** Beancount
 #+BEGIN_src emacs-lisp 
 (use-package beancount
@@ -504,6 +617,70 @@ If the universal prefix argument is used then will the windows too."
 (use-package ox-tufte-latex)
 #+END_SRC
 
+** Centaur Tabs
+#+begin_SRC emacs-lisp 
+ (use-package centaur-tabs
+   :config
+   (setq centaur-tabs-style "chamfer")
+   (setq centaur-tabs-height 32)
+   (setq centaur-tabs-set-icons t)
+   (setq centaur-tabs-set-bar t)
+   (setq centaur-tabs-set-modified-marker t)
+   (centaur-tabs-headline-match)
+   (centaur-tabs-mode t)
+   (defun centaur-tabs-buffer-groups ()
+     "`centaur-tabs-buffer-groups' control buffers' group rules.
+
+ Group centaur-tabs with mode if buffer is derived from `eshell-mode' `emacs-lisp-mode' `dired-mode' `org-mode' `magit-mode'.
+ All buffer name start with * will group to \"Emacs\".
+ Other buffer group by `centaur-tabs-get-group-name' with project name."
+     (list
+      (cond
+	((or (string-equal "*" (substring (buffer-name) 0 1))
+	     (memq major-mode '(magit-process-mode
+				magit-status-mode
+				magit-diff-mode
+				magit-log-mode
+				magit-file-mode
+				magit-blob-mode
+				magit-blame-mode
+				)))
+	 "Emacs")
+	((derived-mode-p 'prog-mode)
+	 "Editing")
+	((derived-mode-p 'dired-mode)
+	 "Dired")
+	((memq major-mode '(helpful-mode
+			    help-mode))
+	 "Help")
+	((memq major-mode '(org-mode
+			    org-agenda-clockreport-mode
+			    org-src-mode
+			    org-agenda-mode
+			    org-beamer-mode
+			    org-indent-mode
+			    org-bullets-mode
+			    org-cdlatex-mode
+			    org-agenda-log-mode
+			    diary-mode))
+	 "OrgMode")
+	(t
+	 (centaur-tabs-get-group-name (current-buffer))))))
+   :hook
+   (dashboard-mode . centaur-tabs-local-mode)
+   (term-mode . centaur-tabs-local-mode)
+   (calendar-mode . centaur-tabs-local-mode)
+   (org-agenda-mode . centaur-tabs-local-mode)
+   (helpful-mode . centaur-tabs-local-mode)
+   :bind
+   ("C-<prior>" . centaur-tabs-backward)
+   ("C-<next>" . centaur-tabs-forward)
+   ("C-c t" . centaur-tabs-build-ivy-source)
+   (:map evil-normal-state-map
+	  ("g t" . centaur-tabs-forward)
+	  ("g T" . centaur-tabs-backward)))
+#+end_SRC
+
 ** Critic Markup
 [2018-12-12 Wed 07:30]
 #+begin_src emacs-lisp   
@@ -522,6 +699,18 @@ If the universal prefix argument is used then will the windows too."
   :config
   (global-company-mode t))
 #+END_SRC
+** Dired Toggle
+#+begin_SRC emacs-lisp 
+(use-package dired-toggle
+
+;:quelpa (<package-name> :fetcher <github|bitbucket> :repo <name of repo> :files ("<path>/<file.el>")
+;) :diminish
+; :general
+; :config
+)
+
+
+#+end_SRC
 ** Easy Hugo
 [2018-01-26 Fri 11:53] 
 #+BEGIN_src emacs-lisp   
@@ -795,6 +984,7 @@ For instance pass En as source for English."
      "aol"   'org-store-link
      "aoo"   'org-agenda
      "r"     '(:ignore t :wk "Org Reviews")
+     "rd"    'daily-review
      "rw"    'weekly-review
      "rq"    'quarterly-review
      "ry"    'yearly-review
@@ -827,6 +1017,7 @@ For instance pass En as source for English."
      "r"    'org-refile
      "P"    'org-set-property
      "R"    '(:ignore t :which-key "Reviews")
+     "Rd"   'daily-review
      "Rw"   'weekly-review
      "Rq"   'quarterly-review
      "Ry"   'yearly-review
@@ -841,6 +1032,7 @@ For instance pass En as source for English."
    (general-def org-mode-map
      "<f12>"      'org-narrow-to-subtree
      "M-<f12>"    'widen
+     "<f6>"          'my/org-done
      )
 
    (general-define-key
@@ -868,6 +1060,12 @@ For instance pass En as source for English."
     [remap org-deadline]             'org-agenda-deadline)
 
    :config
+   (defun my/org-done (&optional arg)
+     "Mark current TODO as done.
+   This changes the line at point, all other lines in the agenda referring to
+   the same tree node, and the headline of the tree node in the Org-mode file."
+     (interactive "P")
+     (org-todo "DONE"))
 
    (defun my/org-agenda-done (&optional arg)
      "Mark current TODO as done.
@@ -875,6 +1073,14 @@ For instance pass En as source for English."
    the same tree node, and the headline of the tree node in the Org-mode file."
      (interactive "P")
      (org-agenda-todo "DONE"))
+   (defun daily-review()
+     (interactive)
+     (org-capture nil "rd")
+     (org-capture-finallize t)
+     (org-speed-move-safe 'outline-up-heading)
+     (org-narrow-to-subtree)
+     (fetch-calendar) 
+     )
    (defun weekly-review ()
      (interactive)
      (progn
@@ -913,11 +1119,9 @@ For instance pass En as source for English."
 ;; Capture templates for: TODO tasks, Notes, appointments, phone calls, meetings, and org-protocol
 (setq org-capture-templates
       (quote (("t" "todo" entry (file "~/org/inbox.org")
-               "* TODO %?\nSCHEDULED: %^{Time of task?}T\n%U\n%a\n\n")
+               "* TODO %?\nSCHEDULED: %^{Time of task?}T\n%U\n%a\n")
               ("R" "respond" entry (file "~/org/inbox.org")
                "* TODO Respond to %:from on %:subject\nSCHEDULED: %^{Time of Response?}T\n%U\n%a\n")
-	      ("j" "Journal entry" entry (file+datetree "~/org/journal.org")
-               :tree-type week)
               ("n" "note" entry (file "~/org/notes.org")
                "* %? :NOTE:\n%U\n")
               ("T" "Meeting" entry (file "~/org/inbox.org")
@@ -925,6 +1129,8 @@ For instance pass En as source for English."
 	      ("p" "Project" entry (file+headline "~/org/todo.org" "1 Projects")
 	       (file "~/org/templates/project-template.org"))
               ("r" "Reviews")
+              ("rd" "Review: Daily Review" entry (file+olp+datetree "~/org/reviews.org" )
+               (file "~/org/templates/dailyreviewtemplate.org") :tree-type day)
               ("rw" "Review: Weekly Review" entry (file+olp+datetree "~/org/reviews.org" )
                (file "~/org/templates/weeklyreviewtemplate.org") :tree-type week)
               ("rq" "Review: Quarterly Review" entry (file+olp+datetree "~/org/reviews.org")
@@ -948,6 +1154,7 @@ For instance pass En as source for English."
 
 #+BEGIN_src emacs-lisp   
 ; Targets include this file and any file contributing to the agenda - up to 9 levels deep
+(setq org-agenda-files '("~/org/todo.org") )
 (setq org-refile-targets (quote ((nil :maxlevel . 9)
                                  (org-agenda-files :maxlevel . 9)
                                  ("~/org/somedaymaybe.org" :maxlevel . 2)
@@ -1044,7 +1251,7 @@ For instance pass En as source for English."
                 ((org-agenda-overriding-header "Tasks to Archive")
                  (org-agenda-skip-function 'bh/skip-non-archivable-tasks)
                  (org-tags-match-list-sublevels nil))))
-         ((org-agenda-files '("~/org/todo.org" "~/org/inbox.org" "~/org/memacs/calls.org" "~/org/memacs/mumail.org" "~/org/memacs/sms.org")))
+         ((org-agenda-files '("~/org/todo.org" "~/org/mycal.org" "~/org/sharedcal.org" "~/org/pers-routines.org" "~/org/inbox.org" "~/org/memacs/calls.org" "~/org/memacs/mumail.org" "~/org/memacs/sms.org")))
          ("~/org/Reviews/2018-W.pdf"))
         ("rq" "Quarterly Review"
          ((tags "CProj"
@@ -1113,11 +1320,9 @@ For instance pass En as source for English."
    ((org-agenda-files '("~/org/todo.org")))
    )
   (" " agenda "Whole Agenda"
-   ((org-agenda-files '("~/org/todo.org" "~/org/off-comp.org" "~/org/mycal.org" "~/org/sharedcal.org" "~/org/inbox.org"))))
+   ((org-agenda-files '("~/org/todo.org"  "~/org/pers-routines.org" "~/org/mycal.org" "~/org/sharedcal.org" "~/org/inbox.org"))))
   ("w" agenda "Work Agenda"
    ((org-agenda-files '("~/org/todo.org" "~/org/inbox.org"  "~/org/mycal.org"))))
-  ("c" agenda "Off-Comp Agenda"
-   ((org-agenda-files '("~/org/off-comp.org"))))
   )))
 #+END_SRC
 *** Org Config
@@ -1345,12 +1550,6 @@ I use example and source blocks often in my org files.
 | < s TAB      | #+BEGIN_SRC ... #+END_SRC         |
 | < e TAB      | #+begin_example ... #+end_example |
 
-I've added a block for saving email text which I copy from MS Outlook at work so I have context
-associated with my org-mode tasks.
-
-The following lisp makes the blocks lowercase instead of the default upper case in
-org-mode.
-
 
 #+BEGIN_src emacs-lisp   
 (with-eval-after-load 'org
@@ -1359,16 +1558,16 @@ org-mode.
   (require 'org-checklist)
   )
 (setq org-structure-template-alist
-      (quote(("q" . "quote")
-             ("v" . "verse")
-             ("muse" . "src emacs-lisp \n(use-package ?\n\n;:quelpa (<package-name> :fetcher <github|bitbucket> :repo <name of repo> :files (\"<path>/<file.el>\")\n;) :diminish\n; :general\n; :config\n)\n")
-             ("m" . "src emacs-lisp") 
-             ("r" . "src R :results output :session *R* :exports both")
-             ("R" . "src R :results output graphics :file (org-babel-temp-file \"figure\" \".png\") :exports both :width 600 :height 400 :session *R*")
-             ("RR" . "src R :results output graphics :file  (org-babel-temp-file (concat (file-name-directory (or load-file-name buffer-file-name)) \"figure-\") \".png\") :exports both :width 600 :height 400 :session *R*")
-             ("p" . "src python :results output :exports both")
-             ("P" . "src python :results output :session :exports both")
-             ("PP" . "src python :results file :session :var matplot_lib_filename=(org-babel-temp-file \"figure\" \".png\") :exports both\nimport matplotlib.pyplot as plt\n\nimport numpy\nx=numpy.linspace(-15,15)\nplt.figure(figsize=(10,5))\nplt.plot(x,numpy.cos(x)/x)\nplt.tight_layout()\n\nplt.savefig(matplot_lib_filename)\nmatplot_lib_filename")
+      (quote(("q" . "QUOTE")
+             ("v" . "VERSE")
+             ("muse" . "SRC emacs-lisp \n(use-package ?\n\n;:quelpa (<package-name> :fetcher <github|bitbucket> :repo <name of repo> :files (\"<path>/<file.el>\")\n;) :diminish\n; :general\n; :config\n)\n")
+             ("m" . "SRC emacs-lisp") 
+             ("r" . "SRC R :results output :session *R* :exports both")
+             ("R" . "SRC R :results output graphics :file (org-babel-temp-file \"figure\" \".png\") :exports both :width 600 :height 400 :session *R*")
+             ("RR" . "SRC R :results output graphics :file  (org-babel-temp-file (concat (file-name-directory (or load-file-name buffer-file-name)) \"figure-\") \".png\") :exports both :width 600 :height 400 :session *R*")
+             ("p" . "SRC python :results output :exports both")
+             ("P" . "SRC python :results output :session :exports both")
+             ("PP" . "SRC python :results file :session :var matplot_lib_filename=(org-babel-temp-file \"figure\" \".png\") :exports both\nimport matplotlib.pyplot as plt\n\nimport numpy\nx=numpy.linspace(-15,15)\nplt.figure(figsize=(10,5))\nplt.plot(x,numpy.cos(x)/x)\nplt.tight_layout()\n\nplt.savefig(matplot_lib_filename)\nmatplot_lib_filename")
              )))
 #+END_SRC
 
@@ -2520,7 +2719,7 @@ In the future, I'd like to:
       mu4e-maildir "/home/bala/"
       mu4e-sent-messages-behavior (quote sent)
       mu4e-split-view nil
-      mu4e-update-interval 43200
+      ;; mu4e-update-interval 43200
       mu4e-view-show-addresses t)
 
 ;; default
@@ -2662,6 +2861,8 @@ The editor view configuration.
 
 [[https://github.com/agpchil/mu4e-maildirs-extension][Mu4e maildirs extension]] adds a maildir summary in mu4e-main-view.
 #+begin_src emacs-lisp   
+
+(if (eq system-type 'gnu/linux)
 (use-package mu4e-maildirs-extension
   
 					; :diminish
@@ -2673,7 +2874,7 @@ The editor view configuration.
           mu4e-maildirs-extension-submaildir-separator "✉"
           mu4e-maildirs-extension-action-text          nil))
   
-  )
+  ))
 #+end_src
 
 *** Misc Mu4e
@@ -2868,8 +3069,48 @@ skipped."
 Integrate with org-mode
 
 #+BEGIN_src emacs-lisp   
+;; On Linux
+(if (eq system-type 'gnu/linux)
+(require 'org-mu4e)
+  )
 ;;store link to message if in header view, not to header query
 (setq org-mu4e-link-query-in-headers-mode nil)
+
+(defun org-mu4e-store-link ()
+"Store a link to a mu4e query or message."
+(cond
+ ;; storing links to queries
+ ((eq major-mode 'mu4e-headers-mode)
+  (let* ((query (mu4e-last-query))
+      desc link)
+(org-store-link-props :type "mu4e" :query query)
+(setq
+  desc (concat "mu4e:query:" query)
+  link desc)
+(org-add-link-props :link link :description desc)
+link))
+  ;; storing links to messages
+((eq major-mode 'mu4e-view-mode)
+  (let* ((msg  (mu4e-message-at-point))
+     (msgid   (or (plist-get msg :message-id) "<none>"))
+     (from (car (car (mu4e-message-field msg :from))))
+     (to (car (car (mu4e-message-field msg :to))))
+     (subject (mu4e-message-field msg :subject))
+     link)
+   (setq link (concat "mu4e:msgid:" msgid))
+   (org-store-link-props :type "mu4e" :link link
+             :message-id msgid)
+   (setq link (concat "mu4e:msgid:" msgid))
+   (org-store-link-props 
+    :type "mu4e" :from from :to to :subject subject
+          :message-id msgid)
+
+   (org-add-link-props :link link
+           :description (funcall org-mu4e-link-desc-func msg))
+   link))))
+
+(org-add-link-type "mu4e" 'org-mu4e-open)
+(add-hook 'org-store-link-functions 'org-mu4e-store-link)
 
 ;; this is stolen from John but it didn't work for me until I
 ;; made those changes to mu4e-compose.el
@@ -2918,7 +3159,7 @@ current heading, or the heading indicated by optional argument ID."
   (let ((attachments (mwp-org-attachment-list))
         (subject  (mwp-org-get-headline)))
   (set-buffer (get-buffer-create "*draft*"))
-  (message-mode)
+  (mu4e-compose-mode)
   (insert "From: \n")
   (insert "To: \n")
   (insert "Subject: ")
@@ -2938,8 +3179,10 @@ current heading, or the heading indicated by optional argument ID."
 ** Mu4e Conversation
 
 #+BEGIN_src emacs-lisp   
+
+(if (eq system-type 'gnu/linux)
 (use-package mu4e-conversation
-  )
+  ))
 #+END_SRC
 
 ** Password generator
@@ -3030,12 +3273,24 @@ current heading, or the heading indicated by optional argument ID."
   :config
   (setq shell-pop-shell-type (quote ("ansi-term" "*ansi-term*" (lambda nil (ansi-term shell-pop-term-shell)))))
   (setq shell-pop-term-shell "/bin/bash")
-  (setq shell-pop-window-size 30)
-  (setq shell-pop-full-span t)
-  (setq shell-pop-window-position "bottom") 
+  (setq shell-pop-window-position "full")
+  (setq shell-pop-window-size 80)
   :general
   (spacemacs-lite/set-leader-keys "at" 'shell-pop))
 #+end_src
+
+** Theme Magic
+#+begin_SRC emacs-lisp 
+(use-package theme-magic
+
+;:quelpa (<package-name> :fetcher <github|bitbucket> :repo <name of repo> :files ("<path>/<file.el>")
+;) :diminish
+; :general
+; :config
+)
+
+
+#+end_SRC
 ** TOC org
 [2018-12-05 Wed 08:39]
 #+begin_src emacs-lisp   
@@ -3043,6 +3298,7 @@ current heading, or the heading indicated by optional argument ID."
 
 :init (toc-org-mode 1))
 #+end_src
+ 
 ** Undo Tree
 [2019-01-05 Sat 09:22]
 #+begin_src emacs-lisp 
@@ -3161,6 +3417,16 @@ current heading, or the heading indicated by optional argument ID."
 
 #+END_SRC
 
+** Wunderlist
+
+#+BEGIN_SRC emacs-lisp :tangle no
+(require 'org-wunderlist)
+(setq org-wunderlist-client-id "e57bf50565201c40099f"
+      org-wunderlist-token "ce310736d0f15f17e6365e3b45998a5962475c8b3a3a122cf12c83131853"
+      org-wunderlist-file  "~/org/Wunderlist.org"
+      org-wunderlist-dir "~/org/wunderlist/")
+#+END_SRC
+
 ** Yasnippet
 [2019-01-08 Tue 07:07]
 #+begin_src emacs-lisp 
@@ -3191,6 +3457,125 @@ current heading, or the heading indicated by optional argument ID."
                            (skip-taskbar . t)
                            (sticky . t)))))))
 #+end_src
+** Zenburn
+#+begin_SRC emacs-lisp
+(use-package zenburn-theme
+  :init
+  (defun gh/zenburn-theme-hook()
+    ;; Moody mode-line configuration
+    (let ((line (face-attribute 'mode-line :underline)))
+      (zenburn-with-color-variables
+        (set-face-attribute 'mode-line          nil :overline   line)
+        (set-face-attribute 'mode-line-inactive nil :overline   line)
+        (set-face-attribute 'mode-line-inactive nil :underline  line)
+        (set-face-attribute 'mode-line          nil :box        nil)
+        (set-face-attribute 'mode-line-inactive nil :box        nil)
+        (set-face-attribute 'mode-line          nil :background "gray30" :weight 'bold)
+        (set-face-attribute 'mode-line-inactive nil :background zenburn-bg-1)
+        (set-face-attribute 'mode-line          nil :foreground zenburn-green+4)
+        (set-face-attribute 'mode-line-inactive nil :foreground "gray70")))
+
+    (with-eval-after-load "rainbow-delimiters"
+     (set-face-attribute 'rainbow-delimiters-unmatched-face nil :foreground "red" :strike-through t))
+    (with-eval-after-load "column-enforce-mode"
+      (set-face-attribute 'column-enforce-face nil
+                          :underline nil :foreground "firebrick3"))
+
+    ;; markdown specific settings
+    (set-face-attribute markdown-header-face-1 nil :foreground "#DFAF8F" :weight 'bold)
+    (set-face-attribute markdown-header-face-2 nil :foreground "#BFEBBF" :weight 'bold)
+    (set-face-attribute markdown-header-face-3 nil :foreground "#7CB8BB" :weight 'bold)
+    (set-face-attribute markdown-header-face-4 nil :foreground "#D0BF8F" :weight 'bold)
+    (set-face-attribute markdown-header-face-5 nil :foreground "#93E0E3" :weight 'bold)
+    (set-face-attribute markdown-header-face-6 nil :foreground "#9FC59F" :weight 'bold)
+
+    ;; make the zenburn background face darker
+    (set-face-attribute 'default nil :foreground "#DCDCCC" :background "#383838")
+
+    ;; ivy minibuffer configuration
+    (with-eval-after-load "ivy"
+      (set-face-attribute 'ivy-minibuffer-match-face-4 nil
+                          :background "pink4" :underline nil)
+      (set-face-attribute 'ivy-minibuffer-match-face-3 nil
+                          :background "SteelBlue3" :underline nil)
+      (set-face-attribute 'ivy-minibuffer-match-face-2 nil
+                          :background "DarkSeaGreen4" :underline nil)
+      (set-face-attribute 'ivy-current-match nil
+                          :foreground "#FFECBA" :underline nil :weight 'bold))
+
+    ;; magit faces
+    (with-eval-after-load "magit"
+      (set-face-attribute 'magit-section-highlight nil :background "gray27")
+      (set-face-attribute 'magit-diff-file-heading-highlight nil :background "gray27")
+      (set-face-attribute 'magit-diff-hunk-heading-highlight nil :background "gray27")
+      (set-face-attribute 'magit-diff-context-highlight nil :background "gray27")
+      (set-face-attribute 'magit-branch-current nil :box 'unspecified :weight 'bold)
+      (set-face-attribute 'magit-branch-remote-head nil :box 'unspecified))
+
+    ;; make function face brighter so it's easily distnguishable
+    (set-face-attribute 'font-lock-function-name-face nil :foreground "CadetBlue1")
+
+    ;; fontify links to make them standout
+    (set-face-attribute 'link nil :foreground "#C9B8A2"
+                        :underline nil :weight 'normal)
+    (set-face-attribute 'link-visited nil :foreground "#C9AE8C"
+                        :underline nil :weight 'normal)
+
+    ;; make everything look gray
+    (set-face-attribute 'font-lock-comment-delimiter-face nil :foreground "gray55")
+    (set-face-attribute 'font-lock-comment-face nil :foreground "gray55")
+    (set-face-attribute 'font-lock-doc-face nil :foreground "gray70")
+
+    (with-eval-after-load "golden-ratio-scroll-screen"
+      (set-face-attribute 'golden-ratio-scroll-highlight-line-face nil
+                          :background 'unspecified :foreground 'unspecified))
+
+    (with-eval-after-load "shm"
+      (set-face-background 'shm-current-face "gray27"))
+
+    (set-face-attribute 'hl-line nil :background "gray27")
+    (set-face-attribute 'fringe nil :background "gray30")
+    (set-face-attribute 'vhl/default-face nil :background  "gray27")
+    (set-face-attribute 'vertical-border nil :foreground "gray20")
+
+    ;; hydra configuration
+    (set-face-attribute 'hydra-face-red nil
+                        :foreground "#FF6956" :bold t :background "#383838")
+    (set-face-attribute 'hydra-face-blue nil
+                        :foreground "Cyan" :bold t :background "#383838")
+    (set-face-attribute 'hydra-face-amaranth nil
+                        :foreground "#e52b50" :bold t :background "#383838")
+    (set-face-attribute 'hydra-face-pink nil
+                        :foreground "HotPink1" :bold t :background "#383838")
+    (set-face-attribute 'hydra-face-teal nil
+                        :foreground "SkyBlue1" :bold t :background "#383838")
+
+    ;; disable boxes for `header-line' face
+    (set-face-attribute 'header-line nil :box nil)
+
+    ;; org-mode face
+    (with-eval-after-load "org"
+      ;; set the face for `org-checkbox'
+      (set-face-attribute 'org-checkbox nil :foreground "gray70" :background 'unspecified
+                          :weight 'bold :box nil)
+
+      ;; do not underline `org-date' face
+      (set-face-underline 'org-date nil)
+
+      ;; this looks better in my opinion
+      (set-face-attribute 'org-ellipsis nil :underline 'unspecified :foreground "#E0CF9F")))
+
+  (gh/add-theme-hook 'zenburn #'gh/zenburn-theme-hook)
+
+  :config
+
+  (defun my/load-theme (frame)
+    (select-frame frame)
+    (load-theme 'zenburn))
+  (if (daemonp)
+      (add-hook 'after-make-frame-functions #'my/load-theme)
+(load-theme 'zenburn)))
+#+end_SRC
 ** Zoom
 [2019-01-09 Wed 09:42]
 #+begin_src emacs-lisp
@@ -3202,7 +3587,7 @@ current heading, or the heading indicated by optional argument ID."
 #+end_src
 * Look & Feel
 ** Theme
-#+BEGIN_src emacs-lisp  
+#+BEGIN_src emacs-lisp :tangle no
 (use-package poet-theme)
 #+END_SRC
 
