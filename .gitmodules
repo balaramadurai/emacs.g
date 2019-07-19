@@ -8,7 +8,7 @@
 	ignore = dirty
 [submodule "android-mode"]
 	path = lib/android-mode
-	url = git@github.com:remvee/android-mode.git
+	url = https://github.com/remvee/android-mode.git
 [submodule "async"]
 	path = lib/async
 	url = https://github.com/jwiegley/emacs-async.git
@@ -71,7 +71,7 @@
 	ignore = dirty
 [submodule "deferred"]
 	path = lib/deferred
-	url = git@github.com:kiwanami/emacs-deferred.git
+	url = https://github.com/kiwanami/emacs-deferred.git
 	ignore = dirty
 [submodule "define-word"]
 	path = lib/define-word
@@ -87,7 +87,7 @@
 	ignore = dirty
 [submodule "dired-toggle"]
 	path = lib/dired-toggle
-	url = git@github.com:fasheng/dired-toggle.git
+	url = https://github.com/fasheng/dired-toggle.git
 [submodule "easy-hugo"]
 	path = lib/easy-hugo
 	url = https://github.com/masasam/emacs-easy-hugo.git
@@ -115,7 +115,7 @@
 	ignore = dirty
 [submodule "esxml"]
 	path = lib/esxml
-	url = git@github.com:tali713/esxml.git
+	url = https://github.com/tali713/esxml.git
 	ignore = dirty
 [submodule "evil"]
 	path = lib/evil
@@ -139,7 +139,7 @@
 	ignore = dirty
 [submodule "eyebrowse"]
 	path = lib/eyebrowse
-	url = git@github.com:wasamasa/eyebrowse.git
+	url = https://github.com/wasamasa/eyebrowse.git
 	ignore = dirty
 [submodule "f"]
 	path = lib/f
@@ -249,7 +249,7 @@
 	ignore = dirty
 [submodule "ob-ipython"]
 	path = lib/ob-ipython
-	url = git@github.com:gregsexton/ob-ipython.git
+	url = https://github.com/gregsexton/ob-ipython.git
 	ignore = dirty
 [submodule "olivetti"]
 	path = lib/olivetti
@@ -257,7 +257,7 @@
 	ignore = dirty
 [submodule "openwith"]
 	path = lib/openwith
-	url = git@github.com:emacsmirror/openwith.git
+	url = https://github.com/emacsmirror/openwith.git
 [submodule "org"]
 	path = lib/org
 	url = git@code.orgmode.org:bzg/org-mode.git
@@ -292,11 +292,11 @@
 	ignore = dirty
 [submodule "org-web-tools"]
 	path = lib/org-web-tools
-	url = git@github.com:alphapapa/org-web-tools.git
+	url = https://github.com/alphapapa/org-web-tools.git
 	ignore = dirty
 [submodule "org-wunderlist"]
 	path = lib/org-wunderlist
-	url = git@github.com:myuhe/org-wunderlist.el.git
+	url = https://github.com/myuhe/org-wunderlist.el.git
 [submodule "ox-reveal"]
 	path = lib/ox-reveal
 	url = https://github.com/yjwen/org-reveal.git
@@ -330,7 +330,7 @@
 	ignore = dirty
 [submodule "persp-mode"]
 	path = lib/persp-mode
-	url = git@github.com:Bad-ptr/persp-mode.el.git
+	url = https://github.com/Bad-ptr/persp-mode.el.git
 	ignore = dirty
 [submodule "poet-theme"]
 	path = lib/poet-theme
@@ -358,7 +358,7 @@
 	ignore = dirty
 [submodule "request"]
 	path = lib/request
-	url = git@github.com:tkf/emacs-request.git
+	url = https://github.com/tkf/emacs-request.git
 	ignore = dirty
 [submodule "restart-emacs"]
 	path = lib/restart-emacs
@@ -382,7 +382,7 @@
 	ignore = dirty
 [submodule "spacemacs-theme"]
 	path = lib/spacemacs-theme
-	url = git@github.com:nashamri/spacemacs-theme.git
+	url = https://github.com/nashamri/spacemacs-theme.git
 	ignore = dirty
 [submodule "theme-magic"]
 	path = lib/theme-magic
@@ -393,14 +393,14 @@
 	ignore = dirty
 [submodule "treemacs"]
 	path = lib/treemacs
-	url = git@github.com:Alexander-Miller/treemacs.git
+	url = https://github.com/Alexander-Miller/treemacs.git
 [submodule "typo"]
 	path = lib/typo
 	url = https://github.com/jorgenschaefer/typoel.git
 	ignore = dirty
 [submodule "undo-tree"]
 	path = lib/undo-tree
-	url = git@github.com:emacsorphanage/undo-tree.git
+	url = https://github.com/emacsorphanage/undo-tree.git
 	ignore = dirty
 [submodule "use-package"]
 	path = lib/use-package
@@ -440,16 +440,16 @@
 	ignore = dirty
 [submodule "yasnippet"]
 	path = lib/yasnippet
-	url = git@github.com:joaotavora/yasnippet.git
+	url = https://github.com/joaotavora/yasnippet.git
 	ignore = dirty
 [submodule "yequake"]
 	path = lib/yequake
-	url = git@github.com:alphapapa/yequake.git
+	url = https://github.com/alphapapa/yequake.git
 	ignore = dirty
 [submodule "zenburn-theme"]
 	path = lib/zenburn-theme
-	url = git@github.com:bbatsov/zenburn-emacs.git
+	url = https://github.com/bbatsov/zenburn-emacs.git
 [submodule "zoom"]
 	path = lib/zoom
-	url = git@github.com:cyrus-and/zoom.git
+	url = https://github.com/cyrus-and/zoom.git
 	ignore = dirty
