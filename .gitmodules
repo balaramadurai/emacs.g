@@ -241,7 +241,7 @@
 	ignore = dirty
 [submodule "mu4e-conversation"]
 	path = lib/mu4e-conversation
-	url = git@gitlab.com:ambrevar/mu4e-conversation.git
+	url = https://gitlab.com/ambrevar/mu4e-conversation.git
 	ignore = dirty
 [submodule "mu4e-maildirs-extension"]
 	path = lib/mu4e-maildirs-extension
@@ -260,7 +260,7 @@
 	url = https://github.com/emacsmirror/openwith.git
 [submodule "org"]
 	path = lib/org
-	url = git@code.orgmode.org:bzg/org-mode.git
+	url = https://code.orgmode.org/bzg/org-mode.git
 	ignore = dirty
 [submodule "org-bullets"]
 	path = lib/org-bullets
