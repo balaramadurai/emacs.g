@@ -74,6 +74,7 @@ This is a modest version of the super amazing package called Spacemacs!
   - [[#wunderlist][Wunderlist]]
   - [[#yasnippet][Yasnippet]]
   - [[#yequake][Yequake]]
+  - [[#zenburn][Zenburn]]
   - [[#zoom][Zoom]]
 - [[#look--feel][Look & Feel]]
   - [[#theme][Theme]]
@@ -2862,7 +2863,7 @@ The editor view configuration.
 [[https://github.com/agpchil/mu4e-maildirs-extension][Mu4e maildirs extension]] adds a maildir summary in mu4e-main-view.
 #+begin_src emacs-lisp   
 
-(if (eq system-type 'gnu/linux)
+(if (eq system-name 'LinuxMint)
 (use-package mu4e-maildirs-extension
   
 					; :diminish
@@ -3070,7 +3071,7 @@ Integrate with org-mode
 
 #+BEGIN_src emacs-lisp   
 ;; On Linux
-(if (eq system-type 'gnu/linux)
+(if (eq system-name 'LinuxMint)
 (require 'org-mu4e)
   )
 ;;store link to message if in header view, not to header query
@@ -3180,7 +3181,7 @@ current heading, or the heading indicated by optional argument ID."
 
 #+BEGIN_src emacs-lisp   
 
-(if (eq system-type 'gnu/linux)
+(if (eq system-name 'LinuxMint)
 (use-package mu4e-conversation
   ))
 #+END_SRC
@@ -3458,7 +3459,7 @@ current heading, or the heading indicated by optional argument ID."
                            (sticky . t)))))))
 #+end_src
 ** Zenburn
-#+begin_SRC emacs-lisp
+#+begin_SRC emacs-lisp :tangle no
 (use-package zenburn-theme
   :init
   (defun gh/zenburn-theme-hook()
