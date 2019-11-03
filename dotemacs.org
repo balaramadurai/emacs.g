@@ -16,10 +16,7 @@ This is a modest version of the super amazing package called Spacemacs!
   - [[#beancount][Beancount]]
   - [[#borg-queen][Borg Queen]]
   - [[#ox-tufte-latex][Ox-tufte-latex]]
-  - [[#centaur-tabs][Centaur Tabs]]
-  - [[#critic-markup][Critic Markup]]
   - [[#company][Company]]
-  - [[#dired-toggle][Dired Toggle]]
   - [[#easy-hugo][Easy Hugo]]
   - [[#emoji][Emoji]]
   - [[#ess][ESS]]
@@ -30,7 +27,6 @@ This is a modest version of the super amazing package called Spacemacs!
     - [[#evil-magit][Evil Magit]]
   - [[#eyebrowse][EyeBrowse]]
   - [[#fountain][Fountain]]
-  - [[#gcal][Gcal]]
   - [[#google-translate][Google Translate]]
   - [[#magit][Magit]]
   - [[#olivetti--typo][Olivetti & typo]]
@@ -44,37 +40,23 @@ This is a modest version of the super amazing package called Spacemacs!
     - [[#org-download][Org Download]]
     - [[#org-pomodoro][Org Pomodoro]]
     - [[#org-present][Org Present]]
+    - [[#org-fancy-priority][Org Fancy Priority]]
+    - [[#org-protocol][Org Protocol]]
     - [[#org-ref][Org Ref]]
     - [[#org-reveal][Org Reveal]]
     - [[#org-web-tools][Org web tools]]
+    - [[#ox-hugo][Ox Hugo]]
     - [[#gnuplot][Gnuplot]]
-  - [[#lua][Lua]]
-  - [[#mu4e][Mu4e]]
-    - [[#main-mu4e-config][Main Mu4e config]]
-    - [[#headers-view-config][Header's view config]]
-    - [[#editor-view-config][Editor view config]]
-    - [[#mu4e-maildirs-extension][mu4e-maildirs-extension]]
-    - [[#misc-mu4e][Misc Mu4e]]
-    - [[#thread-only][Thread only]]
-    - [[#org-mode-mu4e-integration][Org mode mu4e integration]]
-  - [[#mu4e-conversation][Mu4e Conversation]]
-  - [[#password-generator][Password generator]]
   - [[#persp-mode][Persp Mode]]
   - [[#projectile][Projectile]]
-  - [[#ranger][Ranger]]
   - [[#restart-emacs][Restart Emacs]]
   - [[#smartparens][Smartparens]]
   - [[#shell-pop][Shell pop]]
-  - [[#theme-magic][Theme Magic]]
   - [[#toc-org][TOC org]]
   - [[#undo-tree][Undo Tree]]
   - [[#w3m][W3m]]
   - [[#writeroom][Writeroom]]
   - [[#writing-mode][Writing Mode]]
-  - [[#wunderlist][Wunderlist]]
-  - [[#yasnippet][Yasnippet]]
-  - [[#yequake][Yequake]]
-  - [[#zenburn][Zenburn]]
   - [[#zoom][Zoom]]
 - [[#look--feel][Look & Feel]]
   - [[#theme][Theme]]
@@ -122,7 +104,7 @@ Initialization of the startup file. I made a design choice of moving to an org f
   (set-face-attribute 'default nil :family "Iosevka" :height 105)
   (set-face-attribute 'fixed-pitch nil :family "Iosevka" :height 105)
   (set-face-attribute 'variable-pitch nil :family "Baskerville" :height 110)
-  (flyspell-mode 1)        ;; Catch Spelling mistakes
+;  (flyspell-mode 1)        ;; Catch Spelling mistakes
   (blink-cursor-mode 0)    ;; Reduce visual noise
 
 ;; These instructions are coming from this website - https://sam217pa.github.io/2016/09/02/how-to-build-your-own-spacemacs/
@@ -134,7 +116,7 @@ Initialization of the startup file. I made a design choice of moving to an org f
 (setq load-prefer-newer t)
 (use-package quelpa-use-package
   :init (setq quelpa-update-melpa-p nil))
-;; (server-start)
+(server-start)
 #+end_src
 
 ** Who am I
@@ -408,7 +390,6 @@ containing the current file by the default explorer."
     
     (general-def
     "<f2>"             'org-agenda
-    "<f5>"             'mu4e
     "<f7>"             'org-gcal-fetch
     "M-]"              'next-buffer
     "M-["              'previous-buffer
@@ -441,7 +422,6 @@ containing the current file by the default explorer."
     ;; Applications
     "ad"   'dired
 ;    "ac"   'calendar
-    "am"   'mu4e
    
     ":"    'shell-command
 
@@ -542,7 +522,7 @@ containing the current file by the default explorer."
 #+END_SRC
 
 ** Helm
-#+BEGIN_src emacs-lisp   
+#+BEGIN_src emacs-lisp
 ;; Helm
 (use-package helm
   
@@ -594,10 +574,6 @@ containing the current file by the default explorer."
 )
 #+end_src
 
-** Android mode
-#+begin_src emacs-lisp
-(use-package android-mode)
-#+end_src
 ** Beancount
 #+BEGIN_src emacs-lisp 
 (use-package beancount
@@ -618,80 +594,6 @@ containing the current file by the default explorer."
 (use-package ox-tufte-latex)
 #+END_SRC
 
-** Centaur Tabs
-#+begin_SRC emacs-lisp 
- (use-package centaur-tabs
-   :config
-   (setq centaur-tabs-style "chamfer")
-   (setq centaur-tabs-height 32)
-   (setq centaur-tabs-set-icons t)
-   (setq centaur-tabs-set-bar t)
-   (setq centaur-tabs-set-modified-marker t)
-   (centaur-tabs-headline-match)
-   (centaur-tabs-mode t)
-   (defun centaur-tabs-buffer-groups ()
-     "`centaur-tabs-buffer-groups' control buffers' group rules.
-
- Group centaur-tabs with mode if buffer is derived from `eshell-mode' `emacs-lisp-mode' `dired-mode' `org-mode' `magit-mode'.
- All buffer name start with * will group to \"Emacs\".
- Other buffer group by `centaur-tabs-get-group-name' with project name."
-     (list
-      (cond
-	((or (string-equal "*" (substring (buffer-name) 0 1))
-	     (memq major-mode '(magit-process-mode
-				magit-status-mode
-				magit-diff-mode
-				magit-log-mode
-				magit-file-mode
-				magit-blob-mode
-				magit-blame-mode
-				)))
-	 "Emacs")
-	((derived-mode-p 'prog-mode)
-	 "Editing")
-	((derived-mode-p 'dired-mode)
-	 "Dired")
-	((memq major-mode '(helpful-mode
-			    help-mode))
-	 "Help")
-	((memq major-mode '(org-mode
-			    org-agenda-clockreport-mode
-			    org-src-mode
-			    org-agenda-mode
-			    org-beamer-mode
-			    org-indent-mode
-			    org-bullets-mode
-			    org-cdlatex-mode
-			    org-agenda-log-mode
-			    diary-mode))
-	 "OrgMode")
-	(t
-	 (centaur-tabs-get-group-name (current-buffer))))))
-   :hook
-   (dashboard-mode . centaur-tabs-local-mode)
-   (term-mode . centaur-tabs-local-mode)
-   (calendar-mode . centaur-tabs-local-mode)
-   (org-agenda-mode . centaur-tabs-local-mode)
-   (helpful-mode . centaur-tabs-local-mode)
-   :bind
-   ("C-<prior>" . centaur-tabs-backward)
-   ("C-<next>" . centaur-tabs-forward)
-   ("C-c t" . centaur-tabs-build-ivy-source)
-   (:map evil-normal-state-map
-	  ("g t" . centaur-tabs-forward)
-	  ("g T" . centaur-tabs-backward)))
-#+end_SRC
-
-** Critic Markup
-[2018-12-12 Wed 07:30]
-#+begin_src emacs-lisp   
-(use-package cm-mode
-
-; :diminish
-; :general
-; :config
-)
-#+end_src
 ** Company
 #+BEGIN_src emacs-lisp  
 (use-package company
@@ -700,18 +602,6 @@ containing the current file by the default explorer."
   :config
   (global-company-mode t))
 #+END_SRC
-** Dired Toggle
-#+begin_SRC emacs-lisp 
-(use-package dired-toggle
-
-;:quelpa (<package-name> :fetcher <github|bitbucket> :repo <name of repo> :files ("<path>/<file.el>")
-;) :diminish
-; :general
-; :config
-)
-
-
-#+end_SRC
 ** Easy Hugo
 [2018-01-26 Fri 11:53] 
 #+BEGIN_src emacs-lisp   
@@ -845,19 +735,6 @@ containing the current file by the default explorer."
 ; :config
 )
 #+end_src
-** EyeBrowse
-[2019-01-07 Mon 17:08]
-#+begin_src emacs-lisp 
-(use-package eyebrowse
-
-;:quelpa (<package-name> :fetcher <github|bitbucket> :repo <name of repo> :files ("<path>/<file.el>")
-;) :diminish
-; :general
-; :config
-)
-
-
-#+end_src
 ** Fountain
 [2018-06-23 Sat 17:55]
 #+BEGIN_src emacs-lisp   
@@ -866,38 +743,6 @@ containing the current file by the default explorer."
   :config
   (setq fountain-pages-show-in-mode-line (quote timer))
   (setq fountain-trans-suffix-list (quote ("TO:" "WITH:" "FADE OUT" "TO BLACK" "CUT TO:"))))
-#+END_SRC
-
-** Gcal
-#+BEGIN_src emacs-lisp   
-(use-package org-gcal
-    :general
-  (spacemacs-lite/set-leader-keys-for-major-mode org-agenda-mode-map
-    "g"     'fetch-calendar
-    )
-  :config
-  (org-babel-load-file "~/.emacs.d/spacemacs.secret.org")
-					;      (add-hook 'emacs-startup-hook #'org-gcal-fetch)
-(defun fetch-calendar ()
-    (when (internet-up-p) (org-gcal-fetch))))
-
-(defun my-org-agenda-recent-open-loops ()
-  (interactive)
-  (let ((org-agenda-start-with-log-mode t)
-	(org-agenda-use-time-grid nil)
-	(org-agenda-files '("~/org/mycal.org" "~/org/sharedcal.org")))
-    (fetch-calendar)
-    (org-agenda-list nil (org-read-date nil nil "-2d") 4)
-    (beginend-org-agenda-mode-goto-beginning)))
-
-(defun my-org-agenda-longer-open-loops ()
-  (interactive)
-  (let ((org-agenda-start-with-log-mode t)
-	(org-agenda-use-time-grid nil)
-	(org-agenda-files '("~/org/mycal.org" "~/org/sharedcal.org")))
-    (fetch-calendar)
-    (org-agenda-list 'file (org-read-date nil nil "-14d") 28)
-    (beginend-org-agenda-mode-goto-beginning)))
 #+END_SRC
 
 ** Google Translate
@@ -1031,8 +876,8 @@ For instance pass En as source for English."
      )
 
    (general-def org-mode-map
-     "<f12>"      'org-narrow-to-subtree
-     "M-<f12>"    'widen
+     "<f8>"      'org-narrow-to-subtree
+     "M-<f8>"    'widen
      "<f6>"          'my/org-done
      )
 
@@ -1054,6 +899,8 @@ For instance pass En as source for English."
   (general-define-key
     :keymaps 'org-agenda-mode-map
     ","                              'org-agenda-goto-today 
+    "n"                              'org-agenda-later
+    "p"                              'org-agenda-earlier
     [remap org-clock-in]             'org-agenda-clock-in
     [remap org-clock-out]            'org-agenda-clock-out
     [remap org-clock-cancel]         'org-agenda-clock-cancel
@@ -1113,10 +960,11 @@ For instance pass En as source for English."
 #+END_SRC
 
 *** Org mode Setup
+
 **** Capture templates
 
 #+BEGIN_src emacs-lisp  
-
+(setq org-protocol-default-template-key "l")
 ;; Capture templates for: TODO tasks, Notes, appointments, phone calls, meetings, and org-protocol
 (setq org-capture-templates
       (quote (("t" "todo" entry (file "~/org/inbox.org")
@@ -1127,7 +975,9 @@ For instance pass En as source for English."
                "* %? :NOTE:\n%U\n")
               ("T" "Meeting" entry (file "~/org/inbox.org")
                "* MEETING with %? :MEETING:\n%U" :clock-in t :clock-resume t)
-	      ("p" "Project" entry (file+headline "~/org/todo.org" "1 Projects")
+              ("i" "Invoice" entry (file "~/org/inbox.org")
+	       (file "~/org/templates/invoice-template.org"))
+	      ("p" "Project" entry (file "~/org/inbox.org")
 	       (file "~/org/templates/project-template.org"))
               ("r" "Reviews")
               ("rd" "Review: Daily Review" entry (file+olp+datetree "~/org/reviews.org" )
@@ -1138,24 +988,28 @@ For instance pass En as source for English."
                (file "~/org/templates/quarterlyreviewtemplate.org"))
               ("ry" "Review: Yearly Review" entry (file+olp+datetree "~/org/reviews.org")
                (file "~/org/templates/yearlyreviewtemplate.org"))
-              ("P" "Plan Travel")
-              ("Pv" "Plan Personal Vacation" entry (file+headline "~/org/todo.org" "1 Projects")
-               (file "~/org/templates/newtraveltemplate.org"))
-              ("Pb" "Plan Business Travel" entry (file+headline "~/org/todo.org" "1 Projects")
-               (file "~/org/templates/newsolotraveltemplate.org"))
               ("s" "Someday / Maybe Idea" entry (file+headline "~/org/somedaymaybe.org" "Someday / Maybe")
                "* SOMEDAY %?\n")
-	      ("u" "uri" entry
-               (file+headline "~/org/notes.org" "Bookmarks")
-               "%(org-web-tools--url-as-readable-org)\n  ** %:annotation\nCaptured on %u\n    Source: %:link \n    %i")
+              ("L" "org-protocol" entry (file "~/org/inbox.org")
+               "* %^{Title}\nSource: %u, %c\n #+BEGIN_QUOTE\n%:initial\n#+END_QUOTE\n\n\n%?")
+              ("l" "org-protocol link" entry (file "~/org/inbox.org")
+                "* TODO %?\n [[%:link][%:description]] \n SCHEDULED: %^{Time of Response?}T\nCaptured On: %U")
               )))
 #+END_SRC
+**** iCalendar setup
+#+begin_SRC emacs-lisp
+(setq org-agenda-files '("~/org/index.org" "~/org/writing.org" "~/org/teaching.org" "~/org/learning.org" "~/org/marketing.org") )
+(setq org-agenda-default-appointment-duration 30)
+(setq org-icalendar-store-UID t)
+(setq org-icalendar-use-scheduled (quote (event-if-todo todo-start)))
 
+(setq org-icalendar-combined-agenda-file "~/org/org.ics")
+
+#+end_SRC
 **** Refile Setup
 
 #+BEGIN_src emacs-lisp   
 ; Targets include this file and any file contributing to the agenda - up to 9 levels deep
-(setq org-agenda-files '("~/org/todo.org") )
 (setq org-refile-targets (quote ((nil :maxlevel . 9)
                                  (org-agenda-files :maxlevel . 9)
                                  ("~/org/somedaymaybe.org" :maxlevel . 2)
@@ -1186,7 +1040,7 @@ For instance pass En as source for English."
 
 [2018-01-05 Fri 12:14] 
 #+BEGIN_src emacs-lisp   
-(setq org-agenda-files '("~/org/todo.org" "~/org/mycal.org" "~/org/sharedcal.org" "~/org/inbox.org"))
+(setq org-agenda-files '("~/org/index.org" "~/org/writing.org" "~/org/teaching.org" "~/org/learning.org" "~/org/marketing.org" "~/org/inbox.org"))
 (setq org-agenda-hide-tags-regexp nil)
 (setq org-agenda-ignore-properties (quote (effort appt stats)))
 (setq org-agenda-include-diary t)
@@ -1195,7 +1049,7 @@ For instance pass En as source for English."
 (setq org-agenda-start-on-weekday 6)
 (setq org-agenda-start-with-log-mode (quote (closed clock state)))
 (setq org-agenda-use-tag-inheritance (quote (nil)))
-(setq diary-file "~/org/diary.org")
+(setq diary-file "~/org/mycal.org")
 #+END_SRC
 
 **** Custom Agenda Views
@@ -1212,12 +1066,6 @@ For instance pass En as source for English."
                     (quote fortnight))
                    (org-agenda-start-on-weekday 6)
                    ))
-          (tags "CProj"
-                ((org-agenda-overriding-header "Current Project")
-                 (org-tags-match-list-sublevels nil)))
-          (tags "+CQuarter+Cyear"
-                ((org-agenda-overriding-header "Completed Projects in this Quarter")
-                 (org-tags-match-list-sublevels nil)))
           (tags-todo "-CANCELLED-HOLD+Proj/!"
                      ((org-agenda-overriding-header "Stuck Projects")
                       (org-agenda-skip-function
@@ -1226,7 +1074,7 @@ For instance pass En as source for English."
                        (quote
                         (category-keep))))
                       )
-          (tags-todo "-HOLD-CANCELLED+Proj/!"
+          (tags-todo "-HOLD-CANCELLED :Proj:/!"
                      ((org-agenda-overriding-header "Projects")
                       (org-agenda-skip-function
                        (quote bh/skip-non-projects))
@@ -1252,19 +1100,10 @@ For instance pass En as source for English."
                 ((org-agenda-overriding-header "Tasks to Archive")
                  (org-agenda-skip-function 'bh/skip-non-archivable-tasks)
                  (org-tags-match-list-sublevels nil))))
-         ((org-agenda-files '("~/org/todo.org" "~/org/mycal.org" "~/org/sharedcal.org" "~/org/pers-routines.org" "~/org/inbox.org" "~/org/memacs/calls.org" "~/org/memacs/mumail.org" "~/org/memacs/sms.org")))
+         ((org-agenda-files '("~/org/index.org" "~/org/writing.org" "~/org/teaching.org" "~/org/learning.org" "~/org/marketing.org" "~/org/inbox.org" )))
          ("~/org/Reviews/2018-W.pdf"))
         ("rq" "Quarterly Review"
-         ((tags "CProj"
-                ((org-agenda-overriding-header "Current Project")
-                 (org-tags-match-list-sublevels nil)))
-          (tags "+CQuarter+CYear/!"
-                ((org-agenda-overriding-header "Completed Projects in this Quarter")
-                 (org-tags-match-list-sublevels nil)))
-          (tags "CYear"
-                ((org-agenda-overriding-header "Completed Projects in this Year")
-                 (org-tags-match-list-sublevels nil)))
-          (tags-todo "-HOLD-CANCELLED+Proj/!"
+         ((tags-todo "-HOLD-CANCELLED+Proj/!"
                      ((org-agenda-overriding-header "Projects")
                       (org-agenda-skip-function
                        (quote bh/skip-non-projects))
@@ -1283,7 +1122,7 @@ For instance pass En as source for English."
                   (quote bh/skip-non-archivable-tasks))
                  (org-tags-match-list-sublevels nil)))
           )
-   ((org-agenda-files '("~/org/todo.org")))
+   ((org-agenda-files '("~/org/index.org" "~/org/writing.org" "~/org/teaching.org" "~/org/learning.org" "~/org/marketing.org")))
          )
         ("ry" "Yearly Review"
          ((tags "CYear"
@@ -1307,23 +1146,17 @@ For instance pass En as source for English."
                         (category-keep)))))
           (tags "SOMEDAY"
                 ((org-agenda-overriding-header "Someday to Projects"))))
-   ((org-agenda-files '("~/org/todo.org")))
+   ((org-agenda-files '("~/org/index.org" "~/org/writing.org" "~/org/teaching.org" "~/org/learning.org" "~/org/marketing.org")))
          )
         ("r" . "Reviews")
-        ("s" "Stuck Projects"
-   ((tags-todo "-HOLD-CANCELLED+Proj/!"
-         ((org-agenda-overriding-header "Stuck Projects")
-          (org-agenda-skip-function
-           (quote bh/skip-non-stuck-projects))
-          (org-agenda-sorting-strategy
-           (quote
-      (category-keep))))))
-   ((org-agenda-files '("~/org/todo.org")))
-   )
+        
   (" " agenda "Whole Agenda"
-   ((org-agenda-files '("~/org/todo.org"  "~/org/pers-routines.org" "~/org/mycal.org" "~/org/sharedcal.org" "~/org/inbox.org"))))
+   ((org-agenda-include-diary t)
+    (org-agenda-files '("~/org/index.org" "~/org/writing.org" "~/org/teaching.org" "~/org/learning.org" "~/org/marketing.org" "~/org/inbox.org"))))
   ("w" agenda "Work Agenda"
-   ((org-agenda-files '("~/org/todo.org" "~/org/inbox.org"  "~/org/mycal.org"))))
+   (
+    (org-agenda-include-diary nil)
+    (org-agenda-files '("~/org/index.org" "~/org/writing.org" "~/org/teaching.org" "~/org/learning.org" "~/org/marketing.org" "~/org/inbox.org"  ))))
   )))
 #+END_SRC
 *** Org Config
@@ -2367,94 +2200,6 @@ up the status of an entry.
 (setq org-tags-column -117)
 #+END_SRC
 
-**** Organization (GTD and PARA)
-From https://github.com/mwfogleman/.emacs.d/blob/master/michael.org#reviews
-***** Projects
-A project is "any outcome that will take more than one action step to complete." As a result of implementing Tiago Forte's "PARA" system, I can ensure that I always have an up to date project list.
-
-#+BEGIN_src emacs-lisp   
-  (defun go-to-projects ()
-    (interactive)
-    (find-file "~/org/todo.org")
-    (widen)
-    (beginning-of-buffer)
-    (re-search-forward "* 1 Projects")
-    (beginning-of-line))
-
-  (defun project-overview ()
-    (interactive)
-    (go-to-projects)
-    (org-narrow-to-subtree)
-    (org-sort-entries t ?p)
-    (org-columns))
-
-  (defun project-deadline-overview ()
-    (interactive)
-    (go-to-projects)
-    (org-narrow-to-subtree)
-    (org-sort-entries t ?d)
-    (org-columns))
-#+END_SRC
-
-The concept of Stuck Projects comes from David Allen's GTD. A stuck project is a project without any action steps or tasks associated with it.
-
-Org-Mode has the ability to tell you which subtrees don't have tasks associated with them. You can also configure what it recognizes as a stuck project. Unfortunately, by default, this functionality picks up a lot of noise.
-
-This function creates an agenda of stuck projects that is restricted to my "Projects" subtree.
-#+BEGIN_src emacs-lisp   
-  (defun my-org-agenda-list-stuck-projects ()
-    (interactive)
-    (go-to-projects)
-    (org-agenda nil "s" 'subtree))
-#+END_SRC
-***** Areas
-#+BEGIN_src emacs-lisp   
-  (defun go-to-areas ()
-      (interactive)
-      (find-file "~/org/todo.org")
-      (widen)
-      (beginning-of-buffer)
-      (re-search-forward "* 2 Areas")
-      (beginning-of-line))
-
-  (defun areas-overview ()
-      (interactive)
-      (go-to-areas)
-      (org-narrow-to-subtree)
-      (org-columns))
-#+END_SRC
-
-***** Progressive Summarization
-Progressive Summarization is the key methodology used for capturing reference materials in a useful way. The idea is that you annotate and recreate your notes with optional layers, added as needed:
-
-- Layer 1: the raw note
-- Layer 2: bolding
-- Layer 3: highlighting
-- Layer 4 is re-summarization
-- Layer 5 is "remixing" the content
-
-Layers 1, 4, and 5 are easy or obvious enough as to how to do them in Org-Mode. Layer 2 might be less obvious for others, but I already use sp-local-pairs to implement an easy bolding process, which is bolded in Emacs and also when exported.
-
-Layer 3 is the tricky part. Ideally, I want to easily highlight a region so that it is *persistently* and *cleanly* highlighted in Emacs, and highlighted in HTML exports. You can highlight HTML with the ~mark~ tag. I've figured out part of this, but not everything.
-
-Org-mode can have [inline literal HTML tags](http://orgmode.org/manual/Quoting-HTML-tags.html#Quoting-HTML-tags), like this:
-
-~@@html:<b>@@bold text@@html:</b>@@~
-
-I can use this to highlight text on export with the ~<mark>~ tag:
-
-#+BEGIN_src emacs-lisp   
-(use-package wrap-region
-  :init
-  (wrap-region-global-mode)
-  :diminish (wrap-region-mode . "")
-  :config
-  (wrap-region-add-wrapper "@@html:<mark>@@" "@@html:</mark>@@" "~" 'org-mode))
-#+END_SRC
-
-In the future, I'd like to:
-- Hide or clean this markup when displayed in Emacs, a la prettify symbols mode
-- Automatically highlight the wrapped region *in Emacs*
 **** Latex settings
 
 #+BEGIN_src emacs-lisp  
@@ -2525,7 +2270,7 @@ In the future, I'd like to:
 #+end_src
 *** Org Calfw
 [2018-12-20 Thu 11:47]
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 (use-package calfw)
 (use-package calfw-org
   :requires calfw
@@ -2550,7 +2295,7 @@ In the future, I'd like to:
 #+END_SRC
 *** Org Download
 [2018-12-08 Sat 18:16]
-#+begin_src emacs-lisp   
+#+begin_src emacs-lisp   :tangle no
 (use-package org-download
   
 					; :diminish
@@ -2609,8 +2354,26 @@ In the future, I'd like to:
   ((org-present-mode-hook . spacemacs-lite//org-present-start)
   (org-present-mode-quit-hook . spacemacs-lite//org-present-end)))
 #+end_src
+*** Org Fancy Priority
+#+begin_SRC emacs-lisp
+(use-package org-fancy-priorities
+  :hook
+  (org-mode . org-fancy-priorities-mode)
+  :config
+  (setq org-fancy-priorities-list '("(#I)" "(#II)" "(#III)" "(#IV)")))
+#+end_SRC
+*** Org Protocol
+#+begin_SRC emacs-lisp 
+(use-package org-protocol
+
+;:quelpa (<package-name> :fetcher <github|bitbucket> :repo <name of repo> :files ("<path>/<file.el>")
+;) :diminish
+; :general
+)
+#+end_SRC
+
 *** Org Ref
-#+begin_src emacs-lisp   
+#+begin_src emacs-lisp   :tangle no
 (use-package org-ref
   :defer t
   :commands (org-ref-bibtex-next-entry
@@ -2676,10 +2439,42 @@ In the future, I'd like to:
 #+end_src
 *** Org web tools
 [2019-01-09 Wed 13:03]
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package org-web-tools
   :requires esxml)
 #+end_src
+*** Ox Hugo
+#+begin_SRC emacs-lisp
+(use-package ox-hugo
+  :config
+  (setq org-export-with-author nil)
+  ;; Populates only the EXPORT_FILE_NAME property in the inserted headline.
+  (with-eval-after-load 'org-capture
+    (defun org-hugo-new-subtree-post-capture-template ()
+      "Returns `org-capture' template string for new Hugo post.
+See `org-capture-templates' for more information."
+      (let* ((title (read-from-minibuffer "Post Title: ")) ;Prompt to enter the post title
+	     (fname (org-hugo-slug title)))
+	(mapconcat #'identity
+		   `(
+		     ,(concat "* TODO " title)
+		     ":PROPERTIES:"
+		     ,(concat ":EXPORT_FILE_NAME: " fname)
+		     ":END:"
+		     "%?\n")          ;Place the cursor here finally
+		   "\n")))
+    
+    (add-to-list 'org-capture-templates
+		 '("h"                ;`org-capture' binding + h
+		   "Hugo post"
+		   entry
+		   ;; It is assumed that below file is present in `org-directory'
+		   ;; and that it has a "Blog Post Ideas" heading. It can even be a
+		   ;; symlink pointing to the actual location of all-posts.org!
+		   (file+olp "balaramadurai.net.org" "Blog Post Ideas")
+		   (function org-hugo-new-subtree-post-capture-template))))
+  )
+#+end_SRC
 *** Gnuplot
 [2018-12-05 Wed 09:33]
 #+begin_src emacs-lisp   
@@ -2688,524 +2483,9 @@ In the future, I'd like to:
     :general 
     (spacemacs-lite/set-leader-keys         "ap" '(org-plot/gnuplot :which-key "gnuplot")))
 #+end_src
-** Lua 
-[2018-12-31 Mon 14:13]
-#+BEGIN_SRC emacs-lisp
-(use-package lua-mode)
-#+END_SRC
-
-** Mu4e
-[2018-10-23 Tue 11:24]
-*** Main Mu4e config
-[2018-08-23 Thu 11:12]
-#+BEGIN_src emacs-lisp   
-(setq mu4e-mu-binary "/usr/local/bin/mu"
-      mu4e-attachment-dir "/home/bala/Downloads"
-      mu4e-bookmarks
-      (quote
-       (("flag:unread AND NOT maildir:/[Gmail].Bin" "Unread messages" 117)
-	("date:today..now" "Today's messages" 116)
-	("date:7d..now AND NOT maildir:/[Gmail].Bin" "Last 7 days" 119)
-	("maildir:/\"Reading List\"" "Reading Time" 114)))
-      mu4e-change-filenames-when-moving t
-      mu4e-compose-dont-reply-to-self t
-      mu4e-compose-format-flowed t
-      mu4e-confirm-quit nil
-      mu4e-enable-mode-line t
-      mu4e-get-mail-command "mbsync gmail"
-      mu4e-headers-auto-update nil
-      mu4e-use-fancy-chars t
-      mu4e-headers-date-format "%x"
-      mu4e-html2text-command "w3m -T text/html"
-      mu4e-maildir "/home/bala/"
-      mu4e-sent-messages-behavior (quote sent)
-      mu4e-split-view nil
-      ;; mu4e-update-interval 43200
-      mu4e-view-show-addresses t)
-
-;; default
-(setq mu4e-maildir "~/gmail-backup")
-
-(setq mu4e-drafts-folder "/[Gmail].Drafts")
-(setq mu4e-sent-folder   "/[Gmail].Sent Mail")
-(setq mu4e-trash-folder  "/[Gmail].Trash")
-
-;; don't save message to Sent Messages, Gmail/IMAP takes care of this
-(setq mu4e-sent-messages-behavior 'delete)
-
-;; (See the documentation for `mu4e-sent-messages-behavior' if you have
-;; additional non-Gmail addresses and want assign them different
-;; behavior.)
-
-;; setup some handy shortcuts
-;; you can quickly switch to your Inbox -- press ``ji''
-;; then, when you want archive some messages, move them to
-;; the 'All Mail' folder by pressing ``ma''.
-
-(setq mu4e-maildir-shortcuts
-      '( ("/INBOX"               . ?i)
-        ("/[Gmail].Sent Mail"   . ?s)
-        ("/[Gmail].Trash"       . ?t)
-        ("/[Gmail].All Mail"    . ?a)
-	("/Reading List"    . ?r)))
-
-;; allow for updating mail using 'U' in the main view:
-
-;; ;; something about ourselves
-(setq
- mu4e-compose-signature
- (concat
-  "Bala Ramadurai\n"
-  "http://balaramadurai.net\n"))
-
-;; sending mail -- replace USERNAME with your gmail username
-;; also, make sure the gnutls command line utils are installed
-;; package 'gnutls-bin' in Debian/Ubuntu
-
-(setq message-send-mail-function 'smtpmail-send-it
-      starttls-use-gnutls t
-      smtpmail-starttls-credentials '(("smtp.gmail.com" 587 nil nil))
-    smtpmail-auth-credentials
-    '(("smtp.gmail.com" 587 "nikimonikado@gmail.com" nil))
-    smtpmail-default-smtp-server "smtp.gmail.com"
-    smtpmail-smtp-server "smtp.gmail.com"
-    smtpmail-smtp-service 587)
-
-;; alternatively, for emacs-24 you can use:
-(setq message-send-mail-function 'smtpmail-send-it
-      smtpmail-stream-type 'starttls
-      smtpmail-default-smtp-server "smtp.gmail.com"
-      smtpmail-smtp-server "smtp.gmail.com"
-      smtpmail-smtp-service 587)
-
-;; don't keep message buffers around
-(setq message-kill-buffer-on-exit t)
-
-;; enable inline images
-(setq mu4e-view-show-images t)
-;; use imagemagick, if available
-(when (fboundp 'imagemagick-register-types)
-  (imagemagick-register-types))
-
-(setq mu4e-view-prefer-html t)
-
-(setq mail-user-agent 'mu4e-user-agent)
-(setq message-citation-line-format "On %a, %b %d %Y, %N wrote:
-")
-(setq message-citation-line-function (quote message-insert-formatted-citation-line))
-(defun my-mu4e-choose-from ()
-  "Choose the From field from user mail address list"
-  (interactive)
-  (save-excursion
-     (goto-char (point-min))
-     (while (not (looking-at "From: ")) (forward-line))
-     (kill-line)
-     (insert (concat "From: " user-full-name " <>"))
-     (backward-char)
-     (insert
-      (ido-completing-read "From: " mu4e-user-mail-address-list))))
-;(define-key message-mode-map (kbd "C-c C-f f") 'my-mu4e-choose-from)
-
-
-(setq smtpmail-queue-mail nil  ;; start in queuing mode
-      smtpmail-queue-dir   "~/Maildir/queue/cur")
-
-;(add-to-list 'mu4e-view-actions
-;	     '("ViewInBrowser" . mu4e-action-view-in-browser) t)
-
-;; Display images inline in the message buffer (use imagemagick if available).
-(add-hook 'mu4e-view-mode-hook
-          (lambda ()
-            (setq mu4e-view-show-images t)))
-
-(when (fboundp 'imagemagick-register-types)
-  (imagemagick-register-types))
-
-#+END_SRC
-
-*** Header's view config
-
-The headers view configuration.
-
-#+BEGIN_src emacs-lisp   
-  ;; more cool and practical than the default
-  (setq mu4e-headers-from-or-to-prefix '("" . "➜ "))
-  ;; to list a lot of mails, more than the default 500
-  ;; is reasonable fast, so why not?
-  (setq mu4e-headers-results-limit 750)
-  ;; columns to show
-  (setq mu4e-headers-fields
-      '(
-        (:human-date . 9)
-        (:flags . 6)
-        (:mailing-list . 10)
-        (:size . 6)
-        (:from-or-to . 22)
-        (:subject)))
-#+END_SRC
-
-*** Editor view config
-
-The editor view configuration.
-
-#+BEGIN_src emacs-lisp   
-  ;; kill the buffer when is no needed any more
-  (setq message-kill-buffer-on-exit t)
-
-  ;; set the text width and activate the spell checking
-  (add-hook 'mu4e-compose-mode-hook (lambda ()
-                                      (set-fill-column 80)
-                                      (flyspell-mode)))
-#+END_SRC
-
-*** mu4e-maildirs-extension
-
-[[https://github.com/agpchil/mu4e-maildirs-extension][Mu4e maildirs extension]] adds a maildir summary in mu4e-main-view.
-#+begin_src emacs-lisp   
-
-(if (eq system-name 'LinuxMint)
-(use-package mu4e-maildirs-extension
-  
-					; :diminish
-					; :general
-  :config 
-  (progn
-    (mu4e-maildirs-extension)
-    (setq mu4e-maildirs-extension-maildir-separator    "*"
-          mu4e-maildirs-extension-submaildir-separator "✉"
-          mu4e-maildirs-extension-action-text          nil))
-  
-  ))
-#+end_src
-
-*** Misc Mu4e
-
-#+BEGIN_src emacs-lisp   
-
-;; http://mbork.pl/2016-02-06_An_attachment_reminder_in_mu4e
-(defun mbork/message-attachment-present-p ()
-  "Return t if an attachment is found in the current message."
-  (save-excursion
-    (save-restriction
-      (widen)
-      (goto-char (point-min))
-      (when (search-forward "<#part" nil t) t))))
-
-(defcustom mbork/message-attachment-intent-re
-  (regexp-opt '("I attach"
-		"I have attached"
-		"I've attached"
-		"I have included"
-		"I've included"
-		"see the attached"
-		"see the attachment"
-		"attached file"))
-  "A regex which - if found in the message, and if there is no
-attachment - should launch the no-attachment warning.")
-
-(defcustom mbork/message-attachment-reminder
-  "Are you sure you want to send this message without any attachment? "
-  "The default question asked when trying to send a message
-containing `mbork/message-attachment-intent-re' without an
-actual attachment.")
-
-(defun mbork/message-warn-if-no-attachments ()
-  "Ask the user if s?he wants to send the message even though
-there are no attachments."
-  (when (and (save-excursion
-	       (save-restriction
-		 (widen)
-		 (goto-char (point-min))
-		 (re-search-forward mbork/message-attachment-intent-re nil t)))
-	     (not (mbork/message-attachment-present-p)))
-    (unless (y-or-n-p mbork/message-attachment-reminder)
-      (keyboard-quit))))
-
-(add-hook 'message-send-hook #'mbork/message-warn-if-no-attachments)
-
-;; function to return first name of email recipients
-;; used by yasnippet
-;; inspired by
-;;http://blog.binchen.org/posts/how-to-use-yasnippets-to-produce-email-templates-in-emacs.html
-(defun bjm/mu4e-get-names-for-yasnippet ()
-  "Return comma separated string of names for an email"
-  (interactive)
-  (let ((email-name "") str email-string email-list email-name2 tmpname)
-    (save-excursion
-      (goto-char (point-min))
-      ;; first line in email could be some hidden line containing NO to field
-      (setq str (buffer-substring-no-properties (point-min) (point-max))))
-    ;; take name from TO field - match series of names
-    (when (string-match "^To: \"?\\(.+\\)" str)
-      (setq email-string (match-string 1 str)))
-    ;;split to list by comma
-    (setq email-list (split-string email-string " *, *"))
-    ;;loop over emails
-    (dolist (tmpstr email-list)
-      ;;get first word of email string
-      (setq tmpname (car (split-string tmpstr " ")))
-      ;;remove whitespace or ""
-      (setq tmpname (replace-regexp-in-string "[ \"]" "" tmpname))
-      ;;join to string
-      (setq email-name
-            (concat email-name ", " tmpname)))
-    ;;remove initial comma
-    (setq email-name (replace-regexp-in-string "^, " "" email-name))
-
-    ;;see if we want to use the name in the FROM field
-    ;;get name in FROM field if available, but only if there is only
-    ;;one name in TO field
-    (if (< (length email-list) 2)
-        (when (string-match "^\\([^ ,\n]+\\).+writes:$" str)
-          (progn (setq email-name2 (match-string 1 str))
-                 ;;prefer name in FROM field if TO field has "@"
-                 (when (string-match "@" email-name)
-                   (setq email-name email-name2))
-                 )))
-    email-name))
-#+END_SRC
-
-*** Thread only
-[2018-10-23 Tue 11:24]
-
-#+BEGIN_src emacs-lisp   
-
-  ;;;;;; Threads functionality hack for mu4e
-  ;; Package to hide lines that match a given regex.
-
-    (use-package hide-lines
-      )
-#+END_SRC
-
-#+BEGIN_src emacs-lisp   
-
-(defun cb/hide-threads ()
-  "Hide thread emails and show just one email per thread."
-  (interactive)
-  (hide-lines-matching "\\(└>\\)\\|\\(├>\\)")
-  ;; Thread emails are now hidden. Only the first email of every thread is visible.
-  (setq cb/threads-visible nil)
-  ;; mu4e-conversation-mode enabled. mu4e-conversation-mode email view.
-  (global-mu4e-conversation-mode 1)
-  ;; Meant to handle nasty bug in how hidden lines are handled. Without this, mu4e-headers-next does
-  ;; not function properly in split-view.
-  (move-to-column 2)
-  )
-
-(defun cb/show-threads ()
-  "Show all emails for every thread."
-  (interactive)
-  (hide-lines-show-all)
-  ;; Thread emails are now visible.
-  (setq cb/threads-visible t)
-  ;; mu4e-conversation-mode disabled. Default mu4e-view-mode email view.
-  (global-mu4e-conversation-mode -1)
-  )
-
-(defun cb/mu4e-toggle-threads()
-  "Toggle threading behavior."
-  (interactive)
-  (if cb/threads-visible
-      (progn
-        (cb/hide-threads)
-        (message "hiding"))
-    (progn
-      (cb/show-threads)
-      (message "showing"))))
-
-(defun cb/annotate-thread-emails ()
-  "Put fringe marker on thread email lines in the curent buffer."
-  ;; Note that the last email of the thread does not get a marker yet. This behavior is not ideal,
-  ;; but doesn't cause any trouble to my workflow.
-  (interactive)
-  (save-excursion
-    (goto-char (point-min))
-    (while (re-search-forward "\\(└>\\)\\|\\(├>\\)" nil t)
-      (save-excursion
-        (previous-line)
-        (let ((overlay (make-overlay (point) (+ 1 (point)))))
-          (overlay-put overlay 'before-string
-                       (propertize "A" 'display '(left-fringe right-triangle))))))))
-
-
-(defun cb/mu4e~headers-move (lines)
-  "Redefinition of the default mu4e~headers-mode to use
-evil-next-line instead of forward-line. This allows threads to be
-skipped."
-  (unless (eq major-mode 'mu4e-headers-mode)
-    (mu4e-error "Must be in mu4e-headers-mode (%S)" major-mode))
-  ;; CB: changed forward-line to evil-next-line
-  (let ((succeeded (progn (evil-next-line lines) t))
-	 (docid (mu4e~headers-docid-at-point)))
-    ;; move point, even if this function is called when this window is not
-    ;; visible
-    (when docid
-      ;; update all windows showing the headers buffer
-      (walk-windows
-       (lambda (win)
-	 (when (eq (window-buffer win) (mu4e-get-headers-buffer))
-	   (set-window-point win (point))))
-       nil t)
-      (if (eq mu4e-split-view 'single-window)
-	  (when (eq (window-buffer) (mu4e-get-view-buffer))
-	    (mu4e-headers-view-message))
-	;; update message view if it was already showing
-	(when (and mu4e-split-view (window-live-p mu4e~headers-view-win))
-	  (mu4e-headers-view-message)))
-      ;; attempt to highlight the new line, display the message
-      (mu4e~headers-highlight docid)
-      docid)))
-
-(defun cb/mu4e-config-threads ()
-;  (evil-define-key 'normal mu4e-headers-mode-map "T" 'cb/mu4e-toggle-threads)
-  (defalias 'mu4e~headers-move 'cb/mu4e~headers-move)
-  (add-hook 'mu4e-headers-found-hook 'cb/annotate-thread-emails)
-  (add-hook 'mu4e-headers-found-hook 'cb/show-threads))
-
-;;;;;; Threads functionality ends here
-#+END_SRC
-
-*** Org mode mu4e integration
-
-Integrate with org-mode
-
-#+BEGIN_src emacs-lisp   
-;; On Linux
-(if (eq system-name 'LinuxMint)
-(require 'org-mu4e)
-  )
-;;store link to message if in header view, not to header query
-(setq org-mu4e-link-query-in-headers-mode nil)
-
-(defun org-mu4e-store-link ()
-"Store a link to a mu4e query or message."
-(cond
- ;; storing links to queries
- ((eq major-mode 'mu4e-headers-mode)
-  (let* ((query (mu4e-last-query))
-      desc link)
-(org-store-link-props :type "mu4e" :query query)
-(setq
-  desc (concat "mu4e:query:" query)
-  link desc)
-(org-add-link-props :link link :description desc)
-link))
-  ;; storing links to messages
-((eq major-mode 'mu4e-view-mode)
-  (let* ((msg  (mu4e-message-at-point))
-     (msgid   (or (plist-get msg :message-id) "<none>"))
-     (from (car (car (mu4e-message-field msg :from))))
-     (to (car (car (mu4e-message-field msg :to))))
-     (subject (mu4e-message-field msg :subject))
-     link)
-   (setq link (concat "mu4e:msgid:" msgid))
-   (org-store-link-props :type "mu4e" :link link
-             :message-id msgid)
-   (setq link (concat "mu4e:msgid:" msgid))
-   (org-store-link-props 
-    :type "mu4e" :from from :to to :subject subject
-          :message-id msgid)
-
-   (org-add-link-props :link link
-           :description (funcall org-mu4e-link-desc-func msg))
-   link))))
-
-(org-add-link-type "mu4e" 'org-mu4e-open)
-(add-hook 'org-store-link-functions 'org-mu4e-store-link)
-
-;; this is stolen from John but it didn't work for me until I
-;; made those changes to mu4e-compose.el
-(defun htmlize-and-send ()
-  "When in an org-mu4e-compose-org-mode message, htmlize and send it."
-  (interactive)
-  (when (member 'org~mu4e-mime-switch-headers-or-body post-command-hook)
-    (org-mime-htmlize)
-    (org-mu4e-compose-org-mode)
-    (mu4e-compose-mode)
-    (message-send-and-exit)))
-
-
-;; This overloads the amazing C-c C-c commands in org-mode with one more function
-;; namely the htmlize-and-send, above.
-(add-hook 'org-ctrl-c-ctrl-c-hook 'htmlize-and-send t)
-
-(defun mwp-org-get-headline ()
-  "Acquire the parent headline & return."
-  (save-excursion
-    (org-mark-subtree)
-    (nth 4 (org-heading-components))))
-
-(defun mwp-org-attachment-list (&optional id)
-  "Get a list of files (absolute filenames) attached to the
-current heading, or the heading indicated by optional argument ID."
-  (when (featurep 'org-attach)
-    (let* ((attach-dir (save-excursion
-                         (when id
-                           (org-id-goto id))
-                         (org-attach-dir t)))
-           (files
-            (mapcar
-             (lambda (f)
-               (expand-file-name f attach-dir))
-             (org-attach-file-list attach-dir))))
-      files)))
-
-(defun org-subtree-as-email ()
-  (interactive)
-
-  ;; TODO: copy org subtree to kill ring
-  ;; ...
-
-  (org-copy-subtree)
-  (let ((attachments (mwp-org-attachment-list))
-        (subject  (mwp-org-get-headline)))
-  (set-buffer (get-buffer-create "*draft*"))
-  (mu4e-compose-mode)
-  (insert "From: \n")
-  (insert "To: \n")
-  (insert "Subject: ")
-  (insert subject)
-  (insert "\n")
-  (insert "--text follows this line--\n")
-    (insert "Hello "  ",\n")
-  (yank)
-    (insert "\nThanks and have a great day,\nBala\n")
-    (dolist (a attachments) (message "Attachment: %s" a) (mml-attach-file a (mm-default-file-encoding a) nil "attachment"))
-  (pop-to-buffer-same-window (current-buffer))
-    ;; (org-mime-subtree)
-    ;; (org-mime-htmlize)
-    ))
-#+END_SRC
-
-** Mu4e Conversation
-
-#+BEGIN_src emacs-lisp   
-
-(if (eq system-name 'LinuxMint)
-(use-package mu4e-conversation
-  ))
-#+END_SRC
-
-** Password generator
-[2018-12-06 Thu 21:17]
-#+begin_src emacs-lisp   
-(use-package password-generator
-
-					; :diminish
-  :general
-  (spacemacs-lite/set-leader-keys
-    "ip"  '(:ignore t :wk "password-generator")
-    "ip1" 'password-generator-simple
-    "ip2" 'password-generator-strong
-    "ip3" 'password-generator-paranoid
-    "ipp" 'password-generator-phonetic
-    "ipn" 'password-generator-numeric)
-					; :config
-)
-#+end_src
 ** Persp Mode
 [2019-01-16 Wed 18:26]
-#+begin_src emacs-lisp 
+#+begin_src emacs-lisp :tangle no
 (use-package persp-mode
 :init
     (progn
@@ -3222,24 +2502,11 @@ current heading, or the heading indicated by optional argument ID."
 #+end_src
 ** Projectile
 [2018-12-04 Tue 08:55]
-#+begin_src emacs-lisp   
+#+begin_src emacs-lisp   :tangle no
 (use-package projectile
 
 :diminish (projectile-mode . " ⓟ"))
 #+end_src
-** Ranger
-#+BEGIN_src emacs-lisp  :tangle no 
-  ;; Ranger
-  (use-package ranger 
-    
-    :hook (after-init . ranger-override-dired-mode)
-    :general
-    (spacemacs-lite/set-leader-keys 
-    "ar" 'ranger
-    "-"  'ranger)
-    )
-#+END_SRC
-
 ** Restart Emacs
 #+BEGIN_src emacs-lisp   
 (use-package restart-emacs
@@ -3280,18 +2547,6 @@ current heading, or the heading indicated by optional argument ID."
   (spacemacs-lite/set-leader-keys "at" 'shell-pop))
 #+end_src
 
-** Theme Magic
-#+begin_SRC emacs-lisp 
-(use-package theme-magic
-
-;:quelpa (<package-name> :fetcher <github|bitbucket> :repo <name of repo> :files ("<path>/<file.el>")
-;) :diminish
-; :general
-; :config
-)
-
-
-#+end_SRC
 ** TOC org
 [2018-12-05 Wed 08:39]
 #+begin_src emacs-lisp   
@@ -3418,165 +2673,6 @@ current heading, or the heading indicated by optional argument ID."
 
 #+END_SRC
 
-** Wunderlist
-
-#+BEGIN_SRC emacs-lisp :tangle no
-(require 'org-wunderlist)
-(setq org-wunderlist-client-id "e57bf50565201c40099f"
-      org-wunderlist-token "ce310736d0f15f17e6365e3b45998a5962475c8b3a3a122cf12c83131853"
-      org-wunderlist-file  "~/org/Wunderlist.org"
-      org-wunderlist-dir "~/org/wunderlist/")
-#+END_SRC
-
-** Yasnippet
-[2019-01-08 Tue 07:07]
-#+begin_src emacs-lisp 
-(use-package yasnippet
-
-;:quelpa (<package-name> :fetcher <github|bitbucket> :repo <name of repo> :files ("<path>/<file.el>")
-;) 
-  :diminish (yas-minor-mode . "ⓨ")
-; :general
-; :config
-)
-#+end_src
-
-** Yequake
-[2019-01-09 Wed 12:44]
-#+begin_src emacs-lisp
-(use-package yequake
-  ;; :quelpa (yequake :fetcher github :repo "alphapapa/yequake")
-
-  :custom
-  (yequake-frames
-   '(("org-capture" 
-      (buffer-fns . (yequake-org-capture))
-      (width . 0.75)
-      (height . 0.5)
-      (alpha . 0.95)
-      (frame-parameters . ((undecorated . t)
-                           (skip-taskbar . t)
-                           (sticky . t)))))))
-#+end_src
-** Zenburn
-#+begin_SRC emacs-lisp :tangle no
-(use-package zenburn-theme
-  :init
-  (defun gh/zenburn-theme-hook()
-    ;; Moody mode-line configuration
-    (let ((line (face-attribute 'mode-line :underline)))
-      (zenburn-with-color-variables
-        (set-face-attribute 'mode-line          nil :overline   line)
-        (set-face-attribute 'mode-line-inactive nil :overline   line)
-        (set-face-attribute 'mode-line-inactive nil :underline  line)
-        (set-face-attribute 'mode-line          nil :box        nil)
-        (set-face-attribute 'mode-line-inactive nil :box        nil)
-        (set-face-attribute 'mode-line          nil :background "gray30" :weight 'bold)
-        (set-face-attribute 'mode-line-inactive nil :background zenburn-bg-1)
-        (set-face-attribute 'mode-line          nil :foreground zenburn-green+4)
-        (set-face-attribute 'mode-line-inactive nil :foreground "gray70")))
-
-    (with-eval-after-load "rainbow-delimiters"
-     (set-face-attribute 'rainbow-delimiters-unmatched-face nil :foreground "red" :strike-through t))
-    (with-eval-after-load "column-enforce-mode"
-      (set-face-attribute 'column-enforce-face nil
-                          :underline nil :foreground "firebrick3"))
-
-    ;; markdown specific settings
-    (set-face-attribute markdown-header-face-1 nil :foreground "#DFAF8F" :weight 'bold)
-    (set-face-attribute markdown-header-face-2 nil :foreground "#BFEBBF" :weight 'bold)
-    (set-face-attribute markdown-header-face-3 nil :foreground "#7CB8BB" :weight 'bold)
-    (set-face-attribute markdown-header-face-4 nil :foreground "#D0BF8F" :weight 'bold)
-    (set-face-attribute markdown-header-face-5 nil :foreground "#93E0E3" :weight 'bold)
-    (set-face-attribute markdown-header-face-6 nil :foreground "#9FC59F" :weight 'bold)
-
-    ;; make the zenburn background face darker
-    (set-face-attribute 'default nil :foreground "#DCDCCC" :background "#383838")
-
-    ;; ivy minibuffer configuration
-    (with-eval-after-load "ivy"
-      (set-face-attribute 'ivy-minibuffer-match-face-4 nil
-                          :background "pink4" :underline nil)
-      (set-face-attribute 'ivy-minibuffer-match-face-3 nil
-                          :background "SteelBlue3" :underline nil)
-      (set-face-attribute 'ivy-minibuffer-match-face-2 nil
-                          :background "DarkSeaGreen4" :underline nil)
-      (set-face-attribute 'ivy-current-match nil
-                          :foreground "#FFECBA" :underline nil :weight 'bold))
-
-    ;; magit faces
-    (with-eval-after-load "magit"
-      (set-face-attribute 'magit-section-highlight nil :background "gray27")
-      (set-face-attribute 'magit-diff-file-heading-highlight nil :background "gray27")
-      (set-face-attribute 'magit-diff-hunk-heading-highlight nil :background "gray27")
-      (set-face-attribute 'magit-diff-context-highlight nil :background "gray27")
-      (set-face-attribute 'magit-branch-current nil :box 'unspecified :weight 'bold)
-      (set-face-attribute 'magit-branch-remote-head nil :box 'unspecified))
-
-    ;; make function face brighter so it's easily distnguishable
-    (set-face-attribute 'font-lock-function-name-face nil :foreground "CadetBlue1")
-
-    ;; fontify links to make them standout
-    (set-face-attribute 'link nil :foreground "#C9B8A2"
-                        :underline nil :weight 'normal)
-    (set-face-attribute 'link-visited nil :foreground "#C9AE8C"
-                        :underline nil :weight 'normal)
-
-    ;; make everything look gray
-    (set-face-attribute 'font-lock-comment-delimiter-face nil :foreground "gray55")
-    (set-face-attribute 'font-lock-comment-face nil :foreground "gray55")
-    (set-face-attribute 'font-lock-doc-face nil :foreground "gray70")
-
-    (with-eval-after-load "golden-ratio-scroll-screen"
-      (set-face-attribute 'golden-ratio-scroll-highlight-line-face nil
-                          :background 'unspecified :foreground 'unspecified))
-
-    (with-eval-after-load "shm"
-      (set-face-background 'shm-current-face "gray27"))
-
-    (set-face-attribute 'hl-line nil :background "gray27")
-    (set-face-attribute 'fringe nil :background "gray30")
-    (set-face-attribute 'vhl/default-face nil :background  "gray27")
-    (set-face-attribute 'vertical-border nil :foreground "gray20")
-
-    ;; hydra configuration
-    (set-face-attribute 'hydra-face-red nil
-                        :foreground "#FF6956" :bold t :background "#383838")
-    (set-face-attribute 'hydra-face-blue nil
-                        :foreground "Cyan" :bold t :background "#383838")
-    (set-face-attribute 'hydra-face-amaranth nil
-                        :foreground "#e52b50" :bold t :background "#383838")
-    (set-face-attribute 'hydra-face-pink nil
-                        :foreground "HotPink1" :bold t :background "#383838")
-    (set-face-attribute 'hydra-face-teal nil
-                        :foreground "SkyBlue1" :bold t :background "#383838")
-
-    ;; disable boxes for `header-line' face
-    (set-face-attribute 'header-line nil :box nil)
-
-    ;; org-mode face
-    (with-eval-after-load "org"
-      ;; set the face for `org-checkbox'
-      (set-face-attribute 'org-checkbox nil :foreground "gray70" :background 'unspecified
-                          :weight 'bold :box nil)
-
-      ;; do not underline `org-date' face
-      (set-face-underline 'org-date nil)
-
-      ;; this looks better in my opinion
-      (set-face-attribute 'org-ellipsis nil :underline 'unspecified :foreground "#E0CF9F")))
-
-  (gh/add-theme-hook 'zenburn #'gh/zenburn-theme-hook)
-
-  :config
-
-  (defun my/load-theme (frame)
-    (select-frame frame)
-    (load-theme 'zenburn))
-  (if (daemonp)
-      (add-hook 'after-make-frame-functions #'my/load-theme)
-(load-theme 'zenburn)))
-#+end_SRC
 ** Zoom
 [2019-01-09 Wed 09:42]
 #+begin_src emacs-lisp
@@ -3588,7 +2684,7 @@ current heading, or the heading indicated by optional argument ID."
 #+end_src
 * Look & Feel
 ** Theme
-#+BEGIN_src emacs-lisp :tangle no
+#+BEGIN_src emacs-lisp
 (use-package poet-theme)
 #+END_SRC
 
@@ -3653,6 +2749,7 @@ current heading, or the heading indicated by optional argument ID."
 [2018-01-05 Fri 12:44] 
 #+BEGIN_src emacs-lisp   
 (global-auto-revert-mode 1)
+(setq frame-title-format "%b")
 
 #+END_SRC
 
@@ -3662,7 +2759,7 @@ Set the start of the week to Saturday
 
 #+BEGIN_src emacs-lisp   
 (setq calendar-week-start-day 6);; set start of week to Saturday
-(setq calendar-date-style (quote european))
+; (setq calendar-date-style (quote european))
 #+END_SRC
 
 ** Browser
