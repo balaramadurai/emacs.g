@@ -56,16 +56,15 @@
  '(custom-enabled-themes (quote (dichromacy)))
  '(custom-safe-themes
    (quote
-    ("aaeb61894d5d3c586d27cee61a3f54493c383733f8d900e05c6fbc8ef6d6bc93" "c53b6a09c7d997c3185cb1598de1d0ff15e1679f5445f9a6cb8b2bf4fc4e565a" "c8d19a09f9d2cb1d6aa6c57e1a86b2dab863cc77a3fc7225a4e60baba96726a1" "fa2b58bb98b62c3b8cf3b6f02f058ef7827a8e497125de0254f56e373abee088" "436b185b423b78eb5d110dc23f4b95d78a1f002d156f226b7e6e5b1f6493dda0" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" default)))
+    ("2925ed246fb757da0e8784ecf03b9523bccd8b7996464e587b081037e0e98001" "aaeb61894d5d3c586d27cee61a3f54493c383733f8d900e05c6fbc8ef6d6bc93" "c53b6a09c7d997c3185cb1598de1d0ff15e1679f5445f9a6cb8b2bf4fc4e565a" "c8d19a09f9d2cb1d6aa6c57e1a86b2dab863cc77a3fc7225a4e60baba96726a1" "fa2b58bb98b62c3b8cf3b6f02f058ef7827a8e497125de0254f56e373abee088" "436b185b423b78eb5d110dc23f4b95d78a1f002d156f226b7e6e5b1f6493dda0" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" default)))
  '(fci-rule-color "#dedede")
  '(line-spacing 0.2)
  '(nrepl-message-colors
    (quote
     ("#CC9393" "#DFAF8F" "#F0DFAF" "#7F9F7F" "#BFEBBF" "#93E0E3" "#94BFF3" "#DC8CC3")))
- '(org-agenda-files
-   (quote
-    ("~/org/todo.org" "~/org/mycal.org" "~/org/sharedcal.org" "~/org/inbox.org")))
- '(package-selected-packages (quote (treemacs delight)))
+ '(org-babel-python-command "python3")
+ '(org-time-stamp-custom-formats (quote ("%d %b %Y" . "<%m/%d/%y %a %H:%M>")))
+ '(package-selected-packages (quote (org-fancy-priorities delight)))
  '(pdf-view-midnight-colors (quote ("#b2b2b2" . "#292b2e")))
  '(vc-annotate-background "#2B2B2B")
  '(vc-annotate-color-map

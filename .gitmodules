@@ -21,6 +21,9 @@
 	path = lib/beancount
 	url = https://github.com/beancount/beancount/
 	ignore = dirty
+[submodule "benchmark-init"]
+	path = lib/benchmark-init
+	url = git@github.com:dholm/benchmark-init-el.git
 [submodule "biblio"]
 	path = lib/biblio
 	url = https://github.com/cpitclaudel/biblio.el.git
@@ -33,13 +36,6 @@
 	path = lib/borg-queen
 	url = https://github.com/thblt/borg-queen.git
 	ignore = dirty
-[submodule "calfw"]
-	path = lib/calfw
-	url = https://github.com/kiwanami/emacs-calfw.git
-	ignore = dirty
-[submodule "centaur-tabs"]
-	path = lib/centaur-tabs
-	url = https://github.com/ema2159/centaur-tabs/
 [submodule "closql"]
 	path = lib/closql
 	url = https://github.com/emacscollective/closql.git
@@ -55,10 +51,6 @@
 [submodule "company-mode"]
 	path = lib/company-mode
 	url = https://github.com/company-mode/company-mode.git
-	ignore = dirty
-[submodule "criticmarkup-emacs"]
-	path = lib/criticmarkup-emacs
-	url = https://github.com/joostkremers/criticmarkup-emacs.git
 	ignore = dirty
 [submodule "dash"]
 	path = lib/dash
@@ -85,9 +77,6 @@
 	path = lib/diminish
 	url = https://github.com/myrjola/diminish.el.git
 	ignore = dirty
-[submodule "dired-toggle"]
-	path = lib/dired-toggle
-	url = https://github.com/fasheng/dired-toggle.git
 [submodule "easy-hugo"]
 	path = lib/easy-hugo
 	url = https://github.com/masasam/emacs-easy-hugo.git
@@ -221,10 +210,6 @@
 	path = lib/less
 	url = https://github.com/xwl/less.git
 	ignore = dirty
-[submodule "lua-mode"]
-	path = lib/lua-mode
-	url = https://github.com/immerrr/lua-mode.git
-	ignore = dirty
 [submodule "magit"]
 	path = lib/magit
 	url = https://github.com/magit/magit.git
@@ -235,6 +220,9 @@
 	path = lib/magit-popup
 	url = https://github.com/magit/magit-popup.git
 	ignore = dirty
+[submodule "monokai-theme"]
+	path = lib/monokai-theme
+	url = git@github.com:oneKelvinSmith/monokai-emacs.git
 [submodule "mu4e"]
 	path = lib/mu4e
 	url = https://github.com/djcb/mu.git
@@ -270,14 +258,16 @@
 	path = lib/org-clock-convenience
 	url = https://github.com/dfeich/org-clock-convenience.git
 	ignore = dirty
+[submodule "org-clock-csv"]
+	path = lib/org-clock-csv
+	url = git@github.com:atheriel/org-clock-csv.git
 [submodule "org-download"]
 	path = lib/org-download
 	url = https://github.com/abo-abo/org-download.git
 	ignore = dirty
-[submodule "org-gcal"]
-	path = lib/org-gcal
-	url = https://github.com/kidd/org-gcal.el.git
-	ignore = dirty
+[submodule "org-fancy-priorities"]
+	path = lib/org-fancy-priorities
+	url = git@github.com:harrybournis/org-fancy-priorities.git
 [submodule "org-pomodoro"]
 	path = lib/org-pomodoro
 	url = https://github.com/lolownia/org-pomodoro.git
@@ -294,9 +284,12 @@
 	path = lib/org-web-tools
 	url = https://github.com/alphapapa/org-web-tools.git
 	ignore = dirty
-[submodule "org-wunderlist"]
-	path = lib/org-wunderlist
-	url = https://github.com/myuhe/org-wunderlist.el.git
+[borg]
+	pushDefault = locutus
+	collective = emacsg
+[submodule "ox-hugo"]
+	path = lib/ox-hugo
+	url = git@github.com:kaushalmodi/ox-hugo.git
 [submodule "ox-reveal"]
 	path = lib/ox-reveal
 	url = https://github.com/yjwen/org-reveal.git
@@ -317,13 +310,6 @@
 	path = lib/parsebib
 	url = https://github.com/joostkremers/parsebib.git
 	ignore = dirty
-[submodule "password-generator"]
-	path = lib/password-generator
-	url = https://github.com/zargener/emacs-password-genarator.git
-	ignore = dirty
-[borg]
-	pushDefault = locutus
-	collective = emacsg
 [submodule "pdf-tools"]
 	path = lib/pdf-tools
 	url = https://github.com/politza/pdf-tools.git
@@ -351,10 +337,6 @@
 [submodule "quelpa-use-package"]
 	path = lib/quelpa-use-package
 	url = https://framagit.org/steckerhalter/quelpa-use-package.git
-	ignore = dirty
-[submodule "ranger"]
-	path = lib/ranger
-	url = https://github.com/ralesi/ranger.el.git
 	ignore = dirty
 [submodule "request"]
 	path = lib/request
@@ -384,9 +366,6 @@
 	path = lib/spacemacs-theme
 	url = https://github.com/nashamri/spacemacs-theme.git
 	ignore = dirty
-[submodule "theme-magic"]
-	path = lib/theme-magic
-	url = https://github.com/jcaw/theme-magic/
 [submodule "toc-org"]
 	path = lib/toc-org
 	url = https://github.com/snosov1/toc-org.git
@@ -438,17 +417,6 @@
 	path = lib/writeroom-mode
 	url = https://github.com/joostkremers/writeroom-mode.git
 	ignore = dirty
-[submodule "yasnippet"]
-	path = lib/yasnippet
-	url = https://github.com/joaotavora/yasnippet.git
-	ignore = dirty
-[submodule "yequake"]
-	path = lib/yequake
-	url = https://github.com/alphapapa/yequake.git
-	ignore = dirty
-[submodule "zenburn-theme"]
-	path = lib/zenburn-theme
-	url = https://github.com/bbatsov/zenburn-emacs.git
 [submodule "zoom"]
 	path = lib/zoom
 	url = https://github.com/cyrus-and/zoom.git
